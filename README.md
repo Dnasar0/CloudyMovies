@@ -11,7 +11,7 @@ O objetivo principal é criar um jogo onde o jogador tenta adivinhar se o rating
 ---
 
 ## 📂 Dataset
-- **Movies Dataset:** 783 MB (CSV)  
+- **Movies Dataset:** 783 MB (CSV)  | https://www.kaggle.com/datasets/gsimonx37/letterboxd/data
 - **Imagens:** 18 GB (fotos extraídas da Internet)  
 - **Date of Release:** 2024
 
