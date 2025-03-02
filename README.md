@@ -1,5 +1,13 @@
 # 🚀 Projeto Cloud Computing: Jogo de Adivinhação de Ratings de Filmes  
 
+## 🕴️ Membros 
+- Diogo Sargaço 58252
+- Francisco Papoula 58206
+- Henrique Vale 58168
+
+---
+
+
 ## 🎯 Descrição  
 O objetivo principal é criar um jogo onde o jogador tenta adivinhar se o rating de um filme do **Letterboxd**, apresentado no lado esquerdo da tela, é maior ou menor que o do filme apresentado à direita.  
 
