@@ -1,0 +1,370 @@
+openapi: 3.0.0
+info:
+  title: "Cloudy Movies"
+  description: "An API about an app where you will be able to play a higher/lower game about IMDb ratings of movies"
+  version: "1.0.0"
+
+servers:
+  - url: "/CloudyMovies"
+
+components:
+  schemas:
+    GameMovieDetails:
+      type: "object"
+      required:
+        - title
+        - rating
+      properties:
+        tagline:
+          type: "string"
+        duration:
+          type: "integer"
+        title:
+          type: "string"
+        year:
+          type: "integer"
+        movieId:
+          type: "integer"
+        poster:
+          type: "string"
+        rating:
+          type: "number"
+    
+    Movie:
+      type: "object"
+      required:
+        - movie
+      properties:
+        movie:
+          type: "object"
+          items:
+            $ref : '#/components/schemas/GameMovieDetails'
+        description:
+          type: "string"
+        crew:
+          type: "array"
+          items:
+            $ref: '#/components/schemas/People'
+          minLength: 1
+          maxLength: 3
+        genre:
+          type: "array"
+          items:
+            $ref: '#/components/schemas/Genre'
+          minLength: 1
+          maxLength: 3
+        studios:
+          type: "array"
+          items:
+            type: "string"
+          minLength: 1
+          maxLength: 3
+        themes:
+          type: "array"
+          items:
+            $ref: '#/components/schemas/Theme'
+          minLength: 1
+          maxLength: 3
+        actors:
+          type: "array"
+          items:
+            $ref: '#/components/schemas/People'
+          minLength: 1
+          maxLength: 5
+
+    People:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        role:
+          type: "string"
+    
+    Theme:
+      type: "object"
+      properties:
+        desc:
+          type: "string"
+    
+    Genre:
+      type: "object"
+      properties:
+        desc:
+          type: "string"
+    
+    Account:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+        password:
+          type: "string"
+        highScore:
+          type: "integer"
+        account_type:
+          type: "string"
+    
+    Tournament:
+      type: "object"
+      properties:
+        date:
+          type: "string"
+        name:
+          type: "string"
+        creator:
+          type: "string"
+        prize:
+          type: "integer"
+        players:
+          type: "array"
+          items:
+            $ref: '#/components/schemas/Account'
+          minLength: 1
+          maxLength: 5
+
+  parameters:
+    id:
+      name: "id"
+      description: "Id of movie"
+      in: path
+      required: true
+      schema:
+        type: "integer"
+    
+    id_account:
+      name: "id"
+      description: "Id of account"
+      in: path
+      required: true
+      schema:
+        type: "integer"
+    
+    id_tournament:
+      name: "id"
+      description: "Id of tournament"
+      in: path
+      required: true
+      schema:
+        type: "integer"
+
+paths:
+  /GameMovie:
+    get:
+      operationId: "gameMovie.read_all"
+      tags:
+        - "GameMovie"
+      summary: "Read the list of all GameMovies"
+      responses:
+        "200":
+          description: "Successfully read GameMovie list"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/GameMovieDetails"
+
+  /GameMovie/random:
+    get:
+      tags:
+        - "GameMovie"
+      operationId: "gameMovie.getRandomId"
+      summary: "Get a random GameMovie"
+      responses:
+        "200":
+          description: "Successfully got random GameMovie"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GameMovieDetails"
+
+  /GameMovie/{id}:
+    put:
+      tags:
+        - "GameMovie"
+      operationId: "gameMovie.update"
+      summary: "Update a GameMovie"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: "Successfully updated GameMovie"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GameMovieDetails"
+
+  /Movie:
+    post:
+      operationId: "movie.create"
+      tags:
+        - "Movie"
+      summary: "Create a Movie"
+      requestBody:
+        description: "Movie to create"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Movie"
+      responses:
+        "201":
+          description: "Successfully created a movie"
+
+  /Movie/{id}:
+    get:
+      tags:
+        - "Movie"
+      operationId: "movie.getOne"
+      summary: "Get a Movie"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: "Successfully got Movie"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Movie"
+    put:
+      tags:
+        - "Movie"
+      operationId: "movie.update"
+      summary: "Update a Movie"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: "Successfully updated Movie"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Movie"
+    delete:
+      tags:
+        - "Movie"
+      operationId: "movie.delete"
+      summary: "Delete a Movie"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "204":
+          description: "Successfully deleted movie"
+
+  /Account:
+    post:
+      operationId: "account.create"
+      tags:
+        - "Account"
+      summary: "Create an Account"
+      responses:
+        "201":
+          description: "Successfully created account"
+      requestBody:
+        description: "Account to create"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Account"
+
+  /Account/{id}:
+    get:
+      tags:
+        - "Account"
+      operationId: "account.getOne"
+      summary: "Get an Account"
+      parameters:
+        - $ref: "#/components/parameters/id_account"
+      responses:
+        "200":
+          description: "Successfully got Account"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+    put:
+      tags:
+        - "Account"
+      operationId: "account.update"
+      summary: "Update an Account"
+      parameters:
+        - $ref: "#/components/parameters/id_account"
+      responses:
+        "200":
+          description: "Successfully updated Account"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Account"
+    delete:
+      tags:
+        - "Account"
+      operationId: "account.delete"
+      summary: "Delete an Account"
+      parameters:
+        - $ref: "#/components/parameters/id_account"
+      responses:
+        "204":
+          description: "Successfully deleted account"
+          
+  /Tournament:
+    post:
+      operationId: "tournament.create"
+      tags:
+        - "Tournament"
+      summary: "Create a Tournament"
+      responses:
+        "201":
+          description: "Successfully created tournament"
+      requestBody:
+        description: "Tournament to create"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tournament"
+
+  /Tournament/{id}:
+    get:
+      tags:
+        - "Tournament"
+      operationId: "tournament.getOne"
+      summary: "Get a Tournament"
+      parameters:
+        - $ref: "#/components/parameters/id_tournament"
+      responses:
+        "200":
+          description: "Successfully got Tournament"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tournament"
+    put:
+      tags:
+        - "Tournament"
+      operationId: "tournament.update"
+      summary: "Update a Tournament"
+      parameters:
+        - $ref: "#/components/parameters/id_tournament"
+      responses:
+        "200":
+          description: "Successfully updated Tournament"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tournament"
+    delete:
+      tags:
+        - "Tournament"
+      operationId: "tournament.delete"
+      summary: "Delete a Tournament"
+      parameters:
+        - $ref: "#/components/parameters/id_tournament"
+      responses:
+        "204":
+          description: "Successfully deleted tournament"
