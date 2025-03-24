@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package tournament;
+
+import "account.proto";
+
+message Tournament {
+  string date = 1;
+  string name = 2;
+  string creator = 3;
+  int32 prize = 4;
+  repeated account.Account players = 5;
+}
+
+message Empty {}
+
+service TournamentService {
+  rpc CreateTournament (Tournament) returns (Empty);
+  rpc GetTournament (Tournament) returns (Tournament);
+}
