@@ -44,6 +44,16 @@ class TournamentServiceStub(object):
                 request_serializer=tournament__pb2.Tournament.SerializeToString,
                 response_deserializer=tournament__pb2.Tournament.FromString,
                 _registered_method=True)
+        self.UpdateTournament = channel.unary_unary(
+                '/tournament.TournamentService/UpdateTournament',
+                request_serializer=tournament__pb2.Tournament.SerializeToString,
+                response_deserializer=tournament__pb2.Empty.FromString,
+                _registered_method=True)
+        self.DeleteTournament = channel.unary_unary(
+                '/tournament.TournamentService/DeleteTournament',
+                request_serializer=tournament__pb2.Tournament.SerializeToString,
+                response_deserializer=tournament__pb2.Empty.FromString,
+                _registered_method=True)
 
 
 class TournamentServiceServicer(object):
@@ -61,6 +71,18 @@ class TournamentServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def UpdateTournament(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteTournament(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_TournamentServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -73,6 +95,16 @@ def add_TournamentServiceServicer_to_server(servicer, server):
                     servicer.GetTournament,
                     request_deserializer=tournament__pb2.Tournament.FromString,
                     response_serializer=tournament__pb2.Tournament.SerializeToString,
+            ),
+            'UpdateTournament': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateTournament,
+                    request_deserializer=tournament__pb2.Tournament.FromString,
+                    response_serializer=tournament__pb2.Empty.SerializeToString,
+            ),
+            'DeleteTournament': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteTournament,
+                    request_deserializer=tournament__pb2.Tournament.FromString,
+                    response_serializer=tournament__pb2.Empty.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -129,6 +161,60 @@ class TournamentService(object):
             '/tournament.TournamentService/GetTournament',
             tournament__pb2.Tournament.SerializeToString,
             tournament__pb2.Tournament.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateTournament(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/tournament.TournamentService/UpdateTournament',
+            tournament__pb2.Tournament.SerializeToString,
+            tournament__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteTournament(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/tournament.TournamentService/DeleteTournament',
+            tournament__pb2.Tournament.SerializeToString,
+            tournament__pb2.Empty.FromString,
             options,
             channel_credentials,
             insecure,

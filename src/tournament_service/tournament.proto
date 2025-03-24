@@ -17,4 +17,6 @@ message Empty {}
 service TournamentService {
   rpc CreateTournament (Tournament) returns (Empty);
   rpc GetTournament (Tournament) returns (Tournament);
+  rpc UpdateTournament (Tournament) returns (Empty);
+  rpc DeleteTournament (Tournament) returns (Empty);
 }

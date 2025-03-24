@@ -22,14 +22,10 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
-import sys
-import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'account_service')))
-
 import account_pb2 as account__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10tournament.proto\x12\ntournament\x1a\raccount.proto\"k\n\nTournament\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0f\n\x07\x63reator\x18\x03 \x01(\t\x12\r\n\x05prize\x18\x04 \x01(\x05\x12!\n\x07players\x18\x05 \x03(\x0b\x32\x10.account.Account\"\x07\n\x05\x45mpty2\x93\x01\n\x11TournamentService\x12=\n\x10\x43reateTournament\x12\x16.tournament.Tournament\x1a\x11.tournament.Empty\x12?\n\rGetTournament\x12\x16.tournament.Tournament\x1a\x16.tournament.Tournamentb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10tournament.proto\x12\ntournament\x1a\raccount.proto\"k\n\nTournament\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0f\n\x07\x63reator\x18\x03 \x01(\t\x12\r\n\x05prize\x18\x04 \x01(\x05\x12!\n\x07players\x18\x05 \x03(\x0b\x32\x10.account.Account\"\x07\n\x05\x45mpty2\x91\x02\n\x11TournamentService\x12=\n\x10\x43reateTournament\x12\x16.tournament.Tournament\x1a\x11.tournament.Empty\x12?\n\rGetTournament\x12\x16.tournament.Tournament\x1a\x16.tournament.Tournament\x12=\n\x10UpdateTournament\x12\x16.tournament.Tournament\x1a\x11.tournament.Empty\x12=\n\x10\x44\x65leteTournament\x12\x16.tournament.Tournament\x1a\x11.tournament.Emptyb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -41,5 +37,5 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_EMPTY']._serialized_start=156
   _globals['_EMPTY']._serialized_end=163
   _globals['_TOURNAMENTSERVICE']._serialized_start=166
-  _globals['_TOURNAMENTSERVICE']._serialized_end=313
+  _globals['_TOURNAMENTSERVICE']._serialized_end=439
 # @@protoc_insertion_point(module_scope)
