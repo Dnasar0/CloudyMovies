@@ -5,7 +5,7 @@ import pandas as pd
 client = MongoClient("mongodb://localhost:27017/")
 
 # Create a database and collections for each dataset
-db = client["my_database"]
+db = client["cloudy_movies"]
 movies_collection = db["movies"]
 crew_collection = db["crew"]
 actors_collection = db["actors"]
