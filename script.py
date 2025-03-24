@@ -14,11 +14,11 @@ genres_collection = db["genres"]
 
 
 # Load CSV files using pandas
-movies_df = pd.read_csv("Movies/movies.csv")
-crew_df = pd.read_csv("Movies/crew.csv")
-actors_df = pd.read_csv("Movies/actors.csv")
-themes_df = pd.read_csv("Movies/themes.csv")
-genres_df = pd.read_csv("Movies/genres.csv")
+movies_df = pd.read_csv("data/movies.csv")
+crew_df = pd.read_csv("data/crew.csv")
+actors_df = pd.read_csv("data/actors.csv")
+themes_df = pd.read_csv("data/themes.csv")
+genres_df = pd.read_csv("data/genres.csv")
 
 # Insert data into MongoDB
 movies_collection.insert_many(movies_df.to_dict(orient='records'))
