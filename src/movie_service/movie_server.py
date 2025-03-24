@@ -3,6 +3,11 @@ from concurrent import futures
 import random
 import movie_pb2
 import movie_pb2_grpc
+from pymongo import MongoClient
+
+client = MongoClient("mongodb://localhost:27017/")
+db = client["movie_service"]
+accounts_collection = db["movies"]
 
 MOVIES = [
     movie_pb2.Movie(movieId=1, title="Inception", rating=8.8, year=2010, poster="inception.jpg"),
@@ -31,7 +36,8 @@ class MovieService(movie_pb2_grpc.MovieServiceServicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     movie_pb2_grpc.add_MovieServiceServicer_to_server(MovieService(), server)
-    server.add_insecure_port('[::]:50051')
+    server.add_insecure_port('[::]:50052')
+    print("Movie server is running on port 50052...")
     server.start()
     server.wait_for_termination()
 

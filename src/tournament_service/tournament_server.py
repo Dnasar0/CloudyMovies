@@ -2,6 +2,11 @@ import grpc
 from concurrent import futures
 import tournament_pb2
 import tournament_pb2_grpc
+from pymongo import MongoClient
+
+client = MongoClient("mongodb://localhost:27017/")
+db = client["tournament_service"]
+accounts_collection = db["tournament"]
 
 class TournamentServiceServicer(tournament_pb2_grpc.TournamentServiceServicer):
     def CreateTournament(self, request, context):
@@ -35,8 +40,8 @@ class TournamentServiceServicer(tournament_pb2_grpc.TournamentServiceServicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     tournament_pb2_grpc.add_TournamentServiceServicer_to_server(TournamentServiceServicer(), server)
-    server.add_insecure_port('[::]:50052')
-    print("Tournament server is running on port 50052...")
+    server.add_insecure_port('[::]:50053')
+    print("Tournament server is running on port 50053...")
     server.start()
     server.wait_for_termination()
 

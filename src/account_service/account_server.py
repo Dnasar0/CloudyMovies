@@ -2,6 +2,11 @@ import grpc
 from concurrent import futures
 import account_pb2
 import account_pb2_grpc
+from pymongo import MongoClient
+
+client = MongoClient("mongodb://localhost:27017/")
+db = client["account_service"]
+accounts_collection = db["accounts"]
 
 class AccountServiceServicer(account_pb2_grpc.AccountServiceServicer):
     def CreateAccount(self, request, context):
@@ -30,6 +35,8 @@ class AccountServiceServicer(account_pb2_grpc.AccountServiceServicer):
         return account_pb2.Empty()  # Return an empty response on success
 
 def serve():
+    # Connect to MongoDB (replace with your MongoDB URI if needed)
+    
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     account_pb2_grpc.add_AccountServiceServicer_to_server(AccountServiceServicer(), server)
     server.add_insecure_port('[::]:50051')
