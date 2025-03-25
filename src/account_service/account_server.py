@@ -3,6 +3,7 @@ from concurrent import futures
 import account_pb2
 import account_pb2_grpc
 from pymongo import MongoClient
+from bson import ObjectId
 
 client = MongoClient("mongodb://localhost:27017/")
 db = client["cloudy_movies"]
@@ -10,29 +11,127 @@ accounts_collection = db["accounts"]
 
 class AccountServiceServicer(account_pb2_grpc.AccountServiceServicer):
     def CreateAccount(self, request, context):
-        # Handle account creation logic
-        print(f"Creating account: {request.username}")
-        return account_pb2.Empty()  # Return an empty response on success
+        try:
+            account_data ={
+                "username": request.username,
+                "password": request.password,
+                "highScore": 0,
+                "account_type": request.account_type
+            }
+            result = accounts_collection.insert_one(account_data)
+            if result.inserted_id:
+                    print(f"Created account with ID: {result.inserted_id}")
+                    return account_pb2.Empty()
+            
+        except Exception as e:
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details(f"Error creating tournament: {str(e)}")
+            return account_pb2.Empty()            
 
     def GetAccountById(self, request, context):
-        # Simulate getting account from a database
-        print(f"Fetching account with ID: {request.id}")
-        return account_pb2.Account(
-            username="example_user",
-            password="password123",
-            highScore=100,
-            account_type="basic"
-        )
+        try:
+            account_id = ObjectId(request.id)
+            account = accounts_collection.find_one({"_id": account_id})
+            if account:
+                return account_pb2.Account(
+                    id=str(account["_id"]),
+                    username=account["username"],
+                    password=account["password"],
+                    highScore=account["highScore"],
+                    account_type=account["account_type"]
+                )
+            else:
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                context.set_details("Account not found")
+                return None
+            
+        except Exception as e:
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details(f"Error retrieving account: {str(e)}")
+            return None 
 
     def UpdateAccount(self, request, context):
-        # Handle account update logic
-        print(f"Updating account: {request.username}")
-        return account_pb2.Empty()  # Return an empty response on success
+        try:
+            account_id = ObjectId(request.id)
+            account = accounts_collection.find_one_and_update(
+                {"_id": account_id},
+                {"$set": {
+                    "username": request.username,
+                    "password": request.password,
+                    "highScore": request.highScore,
+                    "account_type": request.account_type
+                }}
+            )
+            if account:
+                print(f"Updated Account with ID: {request.id}")
+                return account_pb2.Empty()
+            else:
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                context.set_details("Account not found")
+                return account_pb2.Empty()
+            
+        except Exception as e:
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details(f"Error updating Account: {str(e)}")
+            return account_pb2.Empty()    
 
     def DeleteAccount(self, request, context):
+        try:
+            account_id = ObjectId(request.id)
+            result = accounts_collection.delete_one({"_id": account_id})
+            if result.deleted_count == 0:
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                context.set_details("Account not found")
+                return account_pb2.Empty()
+        except Exception as e:
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details(f"Error deleting account: {str(e)}")
+            return account_pb2.Empty()    
         # Handle account deletion logic
-        print(f"Deleting account with ID: {request.id}")
-        return account_pb2.Empty()  # Return an empty response on success
+
+    def UpdateHighScore(self, request, context): 
+        try:
+            account_id = ObjectId(request.id)
+            account = accounts_collection.find_one_and_update(
+                {"_id": account_id},
+                {"$set": {
+                    "highScore": request.highScore
+                }}
+            )
+            if account:
+                print(f"Updated Account with ID: {request.id}")
+                return account_pb2.Empty()
+            else:
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                context.set_details("Account not found")
+                return account_pb2.Empty()
+            
+        except Exception as e:
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details(f"Error updating Account: {str(e)}")
+            return account_pb2.Empty()
+
+    def UpdateAccountType(self, request, context):
+        try:
+            account_id = ObjectId(request.id)
+            account = accounts_collection.find_one_and_update(
+                {"_id": account_id},
+                {"$set": {
+                    "account_type": request.account_type
+                }}
+            )
+            if account:
+                print(f"Updated Account with ID: {request.id}")
+                return account_pb2.Empty()
+            else:
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                context.set_details("Account not found")
+                return account_pb2.Empty()
+            
+        except Exception as e:
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details(f"Error updating Account: {str(e)}")
+            return account_pb2.Empty()       
 
 def serve():
     # Connect to MongoDB (replace with your MongoDB URI if needed)
