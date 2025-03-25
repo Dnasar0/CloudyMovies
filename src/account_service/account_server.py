@@ -5,7 +5,7 @@ import account_pb2_grpc
 from pymongo import MongoClient
 
 client = MongoClient("mongodb://localhost:27017/")
-db = client["account_service"]
+db = client["cloudy_movies"]
 accounts_collection = db["accounts"]
 
 class AccountServiceServicer(account_pb2_grpc.AccountServiceServicer):
