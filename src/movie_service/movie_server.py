@@ -6,32 +6,59 @@ import movie_pb2_grpc
 from pymongo import MongoClient
 
 client = MongoClient("mongodb://localhost:27017/")
-db = client["movie_service"]
-accounts_collection = db["movies"]
-
-MOVIES = [
-    movie_pb2.Movie(movieId=1, title="Inception", rating=8.8, year=2010, poster="inception.jpg"),
-    movie_pb2.Movie(movieId=2, title="The Matrix", rating=8.7, year=1999, poster="matrix.jpg")
-]
+db = client["cloudy_movies"]
+movies_collection = db["movies"]
+genres_collection = db["genres"]
+themes_collection = db["themes"]
+crew_collection = db["crew"]
+actors_collection = db["actors"]
 
 class MovieService(movie_pb2_grpc.MovieServiceServicer):
+    #So retorna o nome e id dos filmes
     def GetAllMovies(self, request, context):
-        return movie_pb2.MovieList(movies=MOVIES)
+        return movies_collection.find({}, {"_id": 1, "name": 1})
 
     def GetRandomMovie(self, request, context):
-        return random.choice(MOVIES)
+        return movies_collection.aggregate([{"$sample": {"size": 1}}]).next()
 
     def CreateMovie(self, request, context):
-        MOVIES.append(request)
+        id = movies_collection.count_documents({}) + 1000000 + 1
+        movie_data = {
+            "id": id,
+            "name": request.title,
+            "date": request.year,
+            "tagline": request.tagline,
+            "description": request.description,
+            "minute": request.minutes,
+            "rating": request.rating
+        }
+        genre_data = {
+            "id": id,
+            "genre": request.genre
+        }
+        theme_data = {
+            "id": id,
+            "theme": request.theme
+        }
+        crew_data = {
+            "id": id,
+            "role": request.role,
+            "name": request.crewName,
+        }
+        actor_data = {
+            "id": id,
+            "role": request.role,
+            "name": request.actorName,
+        }
+        movies_collection.insert_one(movie_data)
+        genres_collection.insert_one(genre_data)
+        themes_collection.insert_one(theme_data)
+        crew_collection.insert_one(crew_data)
+        actors_collection.insert_one(actor_data)
         return movie_pb2.Empty()
 
     def GetMovieById(self, request, context):
-        for movie in MOVIES:
-            if movie.movieId == request.movieId:
-                return movie
-        context.set_code(grpc.StatusCode.NOT_FOUND)
-        context.set_details("Movie not found")
-        return movie_pb2.Movie()
+        return movies_collection.find_one({"id": request.movieId})
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
