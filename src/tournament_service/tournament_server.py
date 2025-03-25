@@ -6,7 +6,7 @@ from pymongo import MongoClient
 from bson import ObjectId
 
 client = MongoClient("mongodb://localhost:27017/")
-db = client["tournament_service"]
+db = client["cloudy_movies"]
 accounts_collection = db["tournament"]
 
 class TournamentServiceServicer(tournament_pb2_grpc.TournamentServiceServicer):
