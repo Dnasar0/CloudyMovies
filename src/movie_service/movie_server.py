@@ -58,7 +58,16 @@ class MovieService(movie_pb2_grpc.MovieServiceServicer):
         return movie_pb2.Empty()
 
     def GetMovieById(self, request, context):
-        return movies_collection.find_one({"id": request.movieId})
+        movie = movies_collection.find_one({"id": request.id})
+        return movie_pb2.Movie(
+            id=movie["id"],
+            title=movie["name"],
+            year=movie["date"],
+            tagline=movie["tagline"],
+            description=movie["description"],
+            minutes=movie["minute"],
+            rating=movie["rating"]	
+        )
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
