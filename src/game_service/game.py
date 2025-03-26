@@ -2,8 +2,8 @@ import os
 
 import grpc
 from flask import Flask, render_template
-from movie_service.movie_pb2_grpc import *
-from movie_service.movie_pb2 import *
+from movie_pb2_grpc import *
+from movie_pb2 import *
 
 app = Flask(__name__)
 
@@ -21,7 +21,7 @@ movie_connection = grpc.insecure_channel(f"recommendations:50051")
 #movie_connection = grpc.insecure_channel(f"{recommendations_host}:50051")
 movie_client = MovieServiceStub(movie_connection)
 
-@app.route("get/<int:given_id>")
+@app.route("/get/<int:given_id>")
 def render_homepage(given_id):
     movie_request = MovieRequest(id=given_id)
     movie_response = movie_client.GetMovieById(movie_request)

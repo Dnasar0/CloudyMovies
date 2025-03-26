@@ -44,6 +44,26 @@ class AccountServiceStub(object):
                 request_serializer=account__pb2.Account.SerializeToString,
                 response_deserializer=account__pb2.Account.FromString,
                 _registered_method=True)
+        self.UpdateAccount = channel.unary_unary(
+                '/account.AccountService/UpdateAccount',
+                request_serializer=account__pb2.Account.SerializeToString,
+                response_deserializer=account__pb2.Empty.FromString,
+                _registered_method=True)
+        self.DeleteAccount = channel.unary_unary(
+                '/account.AccountService/DeleteAccount',
+                request_serializer=account__pb2.Account.SerializeToString,
+                response_deserializer=account__pb2.Empty.FromString,
+                _registered_method=True)
+        self.UpdateHighScore = channel.unary_unary(
+                '/account.AccountService/UpdateHighScore',
+                request_serializer=account__pb2.Account.SerializeToString,
+                response_deserializer=account__pb2.Empty.FromString,
+                _registered_method=True)
+        self.UpdateAccountType = channel.unary_unary(
+                '/account.AccountService/UpdateAccountType',
+                request_serializer=account__pb2.Account.SerializeToString,
+                response_deserializer=account__pb2.Empty.FromString,
+                _registered_method=True)
 
 
 class AccountServiceServicer(object):
@@ -61,6 +81,30 @@ class AccountServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def UpdateAccount(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteAccount(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdateHighScore(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdateAccountType(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_AccountServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -73,6 +117,26 @@ def add_AccountServiceServicer_to_server(servicer, server):
                     servicer.GetAccount,
                     request_deserializer=account__pb2.Account.FromString,
                     response_serializer=account__pb2.Account.SerializeToString,
+            ),
+            'UpdateAccount': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateAccount,
+                    request_deserializer=account__pb2.Account.FromString,
+                    response_serializer=account__pb2.Empty.SerializeToString,
+            ),
+            'DeleteAccount': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteAccount,
+                    request_deserializer=account__pb2.Account.FromString,
+                    response_serializer=account__pb2.Empty.SerializeToString,
+            ),
+            'UpdateHighScore': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateHighScore,
+                    request_deserializer=account__pb2.Account.FromString,
+                    response_serializer=account__pb2.Empty.SerializeToString,
+            ),
+            'UpdateAccountType': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateAccountType,
+                    request_deserializer=account__pb2.Account.FromString,
+                    response_serializer=account__pb2.Empty.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -129,6 +193,114 @@ class AccountService(object):
             '/account.AccountService/GetAccount',
             account__pb2.Account.SerializeToString,
             account__pb2.Account.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateAccount(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/account.AccountService/UpdateAccount',
+            account__pb2.Account.SerializeToString,
+            account__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteAccount(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/account.AccountService/DeleteAccount',
+            account__pb2.Account.SerializeToString,
+            account__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateHighScore(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/account.AccountService/UpdateHighScore',
+            account__pb2.Account.SerializeToString,
+            account__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateAccountType(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/account.AccountService/UpdateAccountType',
+            account__pb2.Account.SerializeToString,
+            account__pb2.Empty.FromString,
             options,
             channel_credentials,
             insecure,
