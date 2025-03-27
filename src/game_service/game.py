@@ -4,7 +4,7 @@ import grpc
 from flask import Flask, render_template
 from movie_pb2_grpc  import MovieServiceStub 
 from movie_pb2 import MovieRequest
-
+import random
 
 
 app = Flask(__name__)
@@ -24,6 +24,10 @@ movie_connection = grpc.insecure_channel("movie_service:50052")
 #movie_connection = grpc.insecure_channel(f"{recommendations_host}:50051")
 movie_client = MovieServiceStub(movie_connection)
 
+@app.route("/")
+def render_index():
+    return render_template("firstScreen.html")
+
 @app.route("/get/<int:given_id>")
 def render_homepage(given_id):
     movie_request = MovieRequest(movieId=given_id)
@@ -32,6 +36,31 @@ def render_homepage(given_id):
     return render_template(
         "gameScreen.html",
         movie=movie_response
+    )
+
+@app.route("/getRandom")
+def render_random():
+    randomMovieId = 1000000+random.randint(1,82447)
+    movie_request = MovieRequest(movieId=randomMovieId)
+    movie_response = movie_client.GetMovieById(movie_request)
+    print(movie_request)
+    return render_template(
+        "gameScreen.html",
+        movie=movie_response
+    )
+
+@app.route("/getTwoRandom")
+def render_tworandom():
+    randomMovieId1 = 1000000+random.randint(1,82447)
+    randomMovieId2 = 1000000+random.randint(1,82447)
+    movie_request1 = MovieRequest(movieId=randomMovieId1)
+    movie_request2 = MovieRequest(movieId=randomMovieId2)
+    movie_response1 = movie_client.GetMovieById(movie_request1)
+    movie_response2 = movie_client.GetMovieById(movie_request2)
+    return render_template(
+        "gameScreen.html",
+        movie1=movie_response1,
+        movie2=movie_response2
     )
 
 if __name__ == "__main__":

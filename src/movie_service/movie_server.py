@@ -13,6 +13,7 @@ genres_collection = db["genres"]
 themes_collection = db["themes"]
 crew_collection = db["crew"]
 actors_collection = db["actors"]
+poster_collection = db["posters"]
 
 class MovieService(movie_pb2_grpc.MovieServiceServicer):
     #So retorna o nome e id dos filmes
@@ -61,7 +62,11 @@ class MovieService(movie_pb2_grpc.MovieServiceServicer):
     def GetMovieById(self, request, context):
         print("Pedido de filme recebido: ", request.movieId)
         movie = movies_collection.find_one({"id": request.movieId})
-        print(movie)
+        poster = poster_collection.find_one({"id": request.movieId})
+        while movie["rating"] == None or poster == None:
+            movieId = random.randint(1, 82447)+1000000
+            movie = movies_collection.find_one({"id": movieId})
+            poster = poster_collection.find_one({"id": request.movieId})
         return movie_pb2.Movie(
             movieId=int(movie["id"]),
             title=str(movie["name"]),
@@ -69,7 +74,8 @@ class MovieService(movie_pb2_grpc.MovieServiceServicer):
             tagline=str(movie["tagline"]),
             description=str(movie["description"]),
             duration=int(movie["minute"]),
-            rating=float(movie["rating"])	
+            rating=float(movie["rating"]),
+            poster=str(poster["link"])	
         )
 
 def serve():

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudyMovies</title>
+</head>
+<body>
+    <h1>Login</h1>
+    <form action="/submit" method="post">
+        <label for="username">User Name:</label><br>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <label>Account Type:</label><br>
+        <input type="radio" id="personal" name="accountType" value="personal" required>
+        <label for="personal">Free</label><br>
+        <input type="radio" id="business" name="accountType" value="business" required>
+        <label for="business">Premium</label><br><br>
+
+        <button type="submit">Play</button>
+    </form>
+</body>
+</html>
