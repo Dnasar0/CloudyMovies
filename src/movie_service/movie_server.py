@@ -3,9 +3,10 @@ from concurrent import futures
 import random
 import movie_pb2
 import movie_pb2_grpc
+from types import SimpleNamespace
 from pymongo import MongoClient
 
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient("mongodb://mongodb:27017/")
 db = client["cloudy_movies"]
 movies_collection = db["movies"]
 genres_collection = db["genres"]
@@ -62,13 +63,13 @@ class MovieService(movie_pb2_grpc.MovieServiceServicer):
         movie = movies_collection.find_one({"id": request.movieId})
         print(movie)
         return movie_pb2.Movie(
-            id=movie["id"],
-            title=movie["name"],
-            year=movie["date"],
-            tagline=movie["tagline"],
-            description=movie["description"],
-            minutes=movie["minute"],
-            rating=movie["rating"]	
+            movieId=int(movie["id"]),
+            title=str(movie["name"]),
+            year=int(movie["date"]),
+            tagline=str(movie["tagline"]),
+            description=str(movie["description"]),
+            duration=int(movie["minute"]),
+            rating=float(movie["rating"])	
         )
 
 def serve():

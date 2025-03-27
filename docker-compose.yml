@@ -1,58 +1,72 @@
 services:
-  account_service:
-    image: python:3.12.9
-    container_name: account_service
-    volumes:
-      - ./src/account_service:/app
-    working_dir: /app
-    expose:
-      - "50051"
-    ports:
-      - "50051:50051"
-    command: bash -c "pip install -r requirements.txt && python -u account_server.py"
-    depends_on:
-      - mongodb
+    account_service:
+        image: python:3.12.9
+        container_name: account_service
+        volumes:
+            - ./src/account_service:/app
+        working_dir: /app
+        expose:
+            - "50051"
+        ports:
+            - "50051:50051"
+        command: bash -c "pip install -r requirements.txt && python -u account_server.py"
+        depends_on:
+            - mongodb
+        networks:
+            - network
 
-  tournament_service:
-    image: python:3.12.9
-    container_name: tournament_service
-    volumes:
-      - ./src/tournament_service:/app
-    working_dir: /app
-    command: bash -c "pip install -r requirements.txt && python -u tournament_server.py"
-    expose:
-      - "50053"
-    ports:
-      - "50053:50053"
-    depends_on:
-      - mongodb
+    tournament_service:
+        image: python:3.12.9
+        container_name: tournament_service
+        volumes:
+            - ./src/tournament_service:/app
+        working_dir: /app
+        command: bash -c "pip install -r requirements.txt && python -u tournament_server.py"
+        expose:
+            - "50053"
+        ports:
+            - "50053:50053"
+        depends_on:
+            - mongodb
+        networks:
+            - network
 
-  movie_service:
-    image: python:3.12.9
-    container_name: movie_service
-    volumes:
-      - ./src/movie_service:/app
-    working_dir: /app
-    expose:
-      - "50052"
-    ports:
-      - "50052:50052"
-    command: bash -c "pip install -r requirements.txt && python -u movie_server.py"
-    depends_on:
-      - mongodb
+    movie_service:
+        image: python:3.12.9
+        container_name: movie_service
+        volumes:
+            - ./src/movie_service:/app
+        working_dir: /app
+        expose:
+            - "50052"
+        ports:
+            - "50052:50052"
+        command: bash -c "pip install -r requirements.txt && python -u movie_server.py"
+        depends_on:
+            - mongodb
+        networks:
+            - network
 
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb
-    ports:
-      - "27017:27017"
-    expose:
-      - "27017"
-    # Uncomment the line below to persist MongoDB data across container restarts
-    # volumes:
-    #   - ./mongo-data:/data/db  
-    # Uncomment the lines below to enable authentication in MongoDB
-    # environment:
-    #   MONGO_INITDB_ROOT_USERNAME: root
-    #   MONGO_INITDB_ROOT_PASSWORD: example
-    
+    mongodb:
+        image: mongo:latest
+        container_name: mongodb
+        ports:
+            - "27017:27017"
+        expose:
+            - "27017"
+        command: ["mongod", "--config", "/etc/mongod.conf"]
+        volumes:
+            - ./mongod.conf:/etc/mongod.conf # Mount custom config
+            - ./mongo_logs:/var/log/mongodb
+        # Uncomment the line below to persist MongoDB data across container restarts
+        #   - ./mongo-data:/data/db
+        # Uncomment the lines below to enable authentication in MongoDB
+        # environment:
+        #   MONGO_INITDB_ROOT_USERNAME: root
+        #   MONGO_INITDB_ROOT_PASSWORD: example
+        networks:
+            - network
+
+networks:
+    network:
+        driver: bridge
