@@ -20,7 +20,7 @@ with open("ca.pem", "rb") as fp:
     ca_cert = fp.read()
 creds = grpc.ssl_channel_credentials(ca_cert, client_key, client_cert)
 """
-movie_connection = grpc.insecure_channel("host.docker.internal:50052")
+movie_connection = grpc.insecure_channel("movie_service:50052")
 #movie_connection = grpc.insecure_channel(f"{recommendations_host}:50051")
 movie_client = MovieServiceStub(movie_connection)
 

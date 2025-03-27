@@ -46,6 +46,24 @@ services:
             - mongodb
         networks:
             - network
+    frontend:
+        image: python:3.12.9
+        container_name: game_service
+        volumes:
+            - ./src/game_service:/app
+        working_dir: /app
+        expose:
+            - "5000"
+        ports:
+            - "5000:5000"
+        command: bash -c "pip install -r requirements.txt && python -u game.py"
+        depends_on:
+            - movie_service
+            - tournament_service
+            - account_service
+            - mongodb
+        networks:
+            - network
 
     mongodb:
         image: mongo:latest
