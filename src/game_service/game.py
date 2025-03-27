@@ -2,10 +2,13 @@ import os
 
 import grpc
 from flask import Flask, render_template
-from movie_pb2_grpc import *
-from movie_pb2 import *
+from movie_pb2_grpc  import MovieServiceStub 
+from movie_pb2 import MovieRequest
+
+
 
 app = Flask(__name__)
+app.debug = True
 
 recommendations_host = os.getenv("RECOMMENDATIONS_HOST", "localhost")
 """"
@@ -29,23 +32,6 @@ def render_homepage(given_id):
         "gameScreen.html",
         movie=movie_response
     )
-@app.route("/scifi")
-def render_scifipage():
-    recommendations_request = RecommendationRequest(
-        user_id=1, category=BookCategory.SCIENCE_FICTION, max_results=3
-    )
-    recommendations_response = recommendations_client.Recommend(
-        recommendations_request
-    )
-    return render_template(
-        "scifipage.html",
-        recommendations=recommendations_response.recommendations,
-    )
-@app.route("/get/<int:given_id>")    
-def render_getbook(given_id):
-    getBook_request = BookRequest(id=given_id)
-    getBook_response = getBook_client.GetBook(getBook_request)
-    return render_template(
-        "getbook.html",
-        book = getBook_response
-    )
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=5000)
