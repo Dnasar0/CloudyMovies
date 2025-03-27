@@ -20,14 +20,15 @@ with open("ca.pem", "rb") as fp:
     ca_cert = fp.read()
 creds = grpc.ssl_channel_credentials(ca_cert, client_key, client_cert)
 """
-movie_connection = grpc.insecure_channel(f"recommendations:50051")
+movie_connection = grpc.insecure_channel("host.docker.internal:50052")
 #movie_connection = grpc.insecure_channel(f"{recommendations_host}:50051")
 movie_client = MovieServiceStub(movie_connection)
 
 @app.route("/get/<int:given_id>")
 def render_homepage(given_id):
-    movie_request = MovieRequest(id=given_id)
+    movie_request = MovieRequest(movieId=given_id)
     movie_response = movie_client.GetMovieById(movie_request)
+    print(movie_request)
     return render_template(
         "gameScreen.html",
         movie=movie_response

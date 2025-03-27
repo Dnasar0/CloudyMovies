@@ -58,7 +58,9 @@ class MovieService(movie_pb2_grpc.MovieServiceServicer):
         return movie_pb2.Empty()
 
     def GetMovieById(self, request, context):
-        movie = movies_collection.find_one({"id": request.id})
+        print("Pedido de filme recebido: ", request.movieId)
+        movie = movies_collection.find_one({"id": request.movieId})
+        print(movie)
         return movie_pb2.Movie(
             id=movie["id"],
             title=movie["name"],
