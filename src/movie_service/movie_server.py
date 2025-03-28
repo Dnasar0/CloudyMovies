@@ -65,6 +65,10 @@ class MovieService(movie_pb2_grpc.MovieServiceServicer):
         while True:
             movie = movies_collection.find_one({"id": request.movieId})
             poster = poster_collection.find_one({"id": request.movieId})
+            actors = actors_collection.find({"id": request.movieId})
+            genres = genres_collection.find({"id": request.movieId})
+            crew = crew_collection.find({"id": request.movieId})
+            theme = themes_collection.find({"id": request.movieId})
 
             if (movie and "rating" in movie and movie["rating"] is not None and not math.isnan(movie["rating"]) and poster and "link" in poster):
                 break

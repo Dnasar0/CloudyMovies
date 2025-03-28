@@ -12,6 +12,7 @@ actors_collection = db["actors"]
 themes_collection = db["themes"]
 genres_collection = db["genres"]
 posters_collection = db["posters"]
+accounts_collection = db["accounts"]
 
 # Load CSV files using pandas
 movies_df = pd.read_csv("data/movies.csv")

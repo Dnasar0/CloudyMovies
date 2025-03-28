@@ -62,6 +62,13 @@
         .button:hover {
             background-color: #0056b3;
         }
+        /* Initially hide movie2 rating */
+        .hidden-rating {
+            display: none;
+            font-size: 18px;
+            font-weight: bold;
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -70,21 +77,22 @@
         <div class="movie-container">
             <h1>Your movie is:</h1>
             <div class="movie1-info">
-                <h2>{{ movie1.title }} ({{ movie1.year }})</h2>
+                <h2>{{ movie1.title }} ({{ movie1.year }})</h2
                 <p><strong>Genre:</strong> {{ movie1.genre }}</p>
-                <p><strong>Rating:</strong> {{ movie1.rating }}</p>
-                <img src="{{ movie1.poster }}" alt="Movie1 Poster" class="movie1-poster">
+                <p><strong>Rating:</strong> <span id="movie1Rating">{{movie1.rating}}</span></p>
+                <img src="{{ movie1.poster }}"  onclick="details(movie1.id)" alt="Movie1 Poster" class="movie1-poster">
             </div>
         </div>
 
         <!-- Score and Buttons in the Middle -->
         <div class="movie-rating">
-            <span class="score">Your score</span>
-            <span></span>
+            <span class="score" id="score">Your score : </span>
+            <span id="movie2Rating" class="hidden-rating">{{ movie2.rating }}</span>
             <div class="buttons">
-                <button class="button">Left</button>
-                <button class="button">Right</button>
+                <button class="button" onclick="choice('Higher')">Higher</button>
+                <button class="button" onclick="choice('Lower')">Lower</button>
             </div>
+            <button id="nextMovie" class="button" onclick="nextMovie()">Next Movie</button>
         </div>
 
         <!-- Right Movie (same as left) -->
@@ -93,10 +101,60 @@
             <div class="movie2-info">
                 <h2>{{ movie2.title }} ({{ movie2.year }})</h2>
                 <p><strong>Genre:</strong> {{ movie2.genre }}</p>
-                <p><strong>Rating:</strong> {{ movie2.rating }}</p>
-                <img src="{{ movie2.poster }}" alt="Movie2 Poster" class="movie2-poster">
+                <p><strong>Rating:</strong> <span id="ratingPlaceholder">???</span></p>
+                <img src="{{ movie2.poster }}" onclick="details(movie2.id)" alt="Movie2 Poster" class="movie2-poster">
             </div>
         </div>
     </div>
+    <script>
+
+        let hasplayed = false;
+        let won = false;
+
+        function choice(choice) {
+            if (hasplayed) {
+                alert("You have already played this round. Please click 'Next Movie' to continue.");
+                return;
+            }
+            hasplayed = true; 
+            let score = 0;
+            const movie1Rating = parseFloat(document.getElementById("movie1Rating").textContent);
+            const movie2Rating = parseFloat(document.getElementById("movie2Rating").textContent);
+            document.getElementById("movie2Rating").style.display = "block";
+            document.getElementById("ratingPlaceholder").textContent = "{{ movie2.rating }}";
+            let correctChoice = (choice === "Higher" && movie1Rating > movie2Rating) ||
+                                (choice === "Lower" && movie1Rating < movie2Rating);
+            if (correctChoice) {
+                score++;
+                alert("✅ Correct! Your score is now: " + score);
+                document.getElementById("score").textContent = "Your score: "+ score;
+                won = true;   
+
+        }
+            else {
+                alert("❌ Incorrect! Your score is: " + score);
+            }
+        }
+
+        function nextMovie() {
+            if (!hasplayed) {
+                alert("Please make a choice before proceeding to the next movie.");
+                return;
+            }
+            hasplayed = false;
+            fetch('http://127.0.0.1:5000/getRandom')     
+        // TODO 
+    }
+
+        function details(id){
+            alert("You clicked on the movie poster with ID: " + id);
+            if (!hasplayed) {
+                alert("Please make a choice before proceeding to the next movie.");
+                return;
+            }
+            fetch('http://127.0.0.1:5000/get/' + id)
+            //TODO: add details page
+        }
+    </script>
 </body>
 </html>
