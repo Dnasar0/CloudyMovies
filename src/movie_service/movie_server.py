@@ -1,3 +1,4 @@
+import math
 import grpc
 from concurrent import futures
 import random
@@ -61,12 +62,14 @@ class MovieService(movie_pb2_grpc.MovieServiceServicer):
 
     def GetMovieById(self, request, context):
         print("Pedido de filme recebido: ", request.movieId)
-        movie = movies_collection.find_one({"id": request.movieId})
-        poster = poster_collection.find_one({"id": request.movieId})
-        while movie["rating"] == None or poster == None:
-            movieId = random.randint(1, 82447)+1000000
-            movie = movies_collection.find_one({"id": movieId})
+        while True:
+            movie = movies_collection.find_one({"id": request.movieId})
             poster = poster_collection.find_one({"id": request.movieId})
+
+            if (movie and "rating" in movie and movie["rating"] is not None and not math.isnan(movie["rating"]) and poster and "link" in poster):
+                break
+
+            request.movieId = 1000000 + random.randint(1, 82447)
         return movie_pb2.Movie(
             movieId=int(movie["id"]),
             title=str(movie["name"]),

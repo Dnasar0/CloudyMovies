@@ -34,7 +34,7 @@ def render_homepage(given_id):
     movie_response = movie_client.GetMovieById(movie_request)
     print(movie_request)
     return render_template(
-        "gameScreen.html",
+        "game1Screen.html",
         movie=movie_response
     )
 
@@ -45,7 +45,7 @@ def render_random():
     movie_response = movie_client.GetMovieById(movie_request)
     print(movie_request)
     return render_template(
-        "gameScreen.html",
+        "game1Screen.html",
         movie=movie_response
     )
 
