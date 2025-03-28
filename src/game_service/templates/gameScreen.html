@@ -80,7 +80,7 @@
                 <h2>{{ movie1.title }} ({{ movie1.year }})</h2
                 <p><strong>Genre:</strong> {{ movie1.genre }}</p>
                 <p><strong>Rating:</strong> <span id="movie1Rating">{{movie1.rating}}</span></p>
-                <img src="{{ movie1.poster }}"  onclick="details(movie1.id)" alt="Movie1 Poster" class="movie1-poster">
+                <img src="{{ movie1.poster }}"  onclick="details(movie1.movieId)" alt="Movie1 Poster" class="movie1-poster">
             </div>
         </div>
 
@@ -102,7 +102,7 @@
                 <h2>{{ movie2.title }} ({{ movie2.year }})</h2>
                 <p><strong>Genre:</strong> {{ movie2.genre }}</p>
                 <p><strong>Rating:</strong> <span id="ratingPlaceholder">???</span></p>
-                <img src="{{ movie2.poster }}" onclick="details(movie2.id)" alt="Movie2 Poster" class="movie2-poster">
+                <img src="{{ movie2.poster }}" onclick="details(movie2.)" alt="Movie2 Poster" class="movie2-poster">
             </div>
         </div>
     </div>
@@ -165,15 +165,32 @@
                 .catch(error => console.error("Error fetching new movie:", error));
         }        
 
-        function details(id){
-            alert("You clicked on the movie poster with ID: " + id);
-            if (!hasplayed) {
-                alert("Please make a choice before proceeding to the next movie.");
-                return;
-            }
-            fetch('http://127.0.0.1:5000/get/' + id)
-            //TODO: add details page
-        }
+function details(id) {
+    alert("You clicked on the movie poster with ID: " + id);
+    
+    // Fetch the movie details using the given movie ID
+    fetch('http://127.0.0.1:5000/get/' + id)
+        .then(response => response.json())
+        .then(movie => {
+            // Create a popup or modal to display the movie details
+            let detailsContent = `
+                <h2>${movie.title} (${movie.year})</h2>
+                <p><strong>Rating:</strong> ${movie.rating}</p>
+                <p><strong>Tagline:</strong> ${movie.tagline || "N/A"}</p>
+                <p><strong>Duration:</strong> ${movie.duration ? movie.duration + ' minutes' : "N/A"}</p>
+                <p><strong>Description:</strong> ${movie.description || "No description available."}</p>
+                <p><strong>Studios:</strong> ${movie.studios.length > 0 ? movie.studios.join(', ') : "N/A"}</p>
+            `;
+
+            // Show the details (you could open a modal or replace the content)
+            alert(detailsContent); // For now, just an alert. You can later create a modal or dedicated details page.
+        })
+        .catch(error => {
+            console.error('Error fetching movie details:', error);
+            alert("Error fetching movie details.");
+        });
+}
+
     </script>
 </body>
 </html>

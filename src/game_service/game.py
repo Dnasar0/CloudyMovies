@@ -65,7 +65,7 @@ def render_random():
     movie_response = movie_client.GetMovieById(movie_request)
     #Ver isto ideia era mandar json com infos, web recebe e subsitui valores antigos de movie1 com estes ver como fazer isso
     movie_data = {
-        #'id': movie_response.id,
+        'id': movie_response.movieId,
         'title': movie_response.title,
         'poster': movie_response.poster,
         'rating': movie_response.rating,
