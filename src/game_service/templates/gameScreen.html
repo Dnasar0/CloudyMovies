@@ -112,6 +112,7 @@
         let won = false;
 
         function choice(choice) {
+
             if (hasplayed) {
                 alert("You have already played this round. Please click 'Next Movie' to continue.");
                 return;
@@ -122,18 +123,17 @@
             const movie2Rating = parseFloat(document.getElementById("movie2Rating").textContent);
             document.getElementById("movie2Rating").style.display = "block";
             document.getElementById("ratingPlaceholder").textContent = "{{ movie2.rating }}";
-            let correctChoice = (choice === "Higher" && movie1Rating > movie2Rating) ||
-                                (choice === "Lower" && movie1Rating < movie2Rating);
+            let correctChoice = (choice === "Higher" && movie1Rating > movie2Rating) || (choice === "Lower" && movie1Rating < movie2Rating);
             if (correctChoice) {
                 score++;
                 alert("✅ Correct! Your score is now: " + score);
                 document.getElementById("score").textContent = "Your score: "+ score;
                 won = true;   
 
-        }
+            }
             else {
                 alert("❌ Incorrect! Your score is: " + score);
-            }
+            }            
         }
 
         function nextMovie() {
@@ -142,9 +142,28 @@
                 return;
             }
             hasplayed = false;
-            fetch('http://127.0.0.1:5000/getRandom')     
-        // TODO 
-    }
+        
+            // Fetch a new random movie
+            fetch('http://127.0.0.1:5000/getRandom')
+                .then(response => response.json())  // Parse response as JSON
+                .then(newMovie => {
+                    // Move movie2 to movie1
+                    document.querySelector(".movie1-info h2").textContent = `${document.querySelector(".movie2-info h2").textContent}`;
+                    document.querySelector(".movie1-info p strong").textContent = `${document.querySelector(".movie2-info p strong").textContent}`;
+                    document.querySelector(".movie1-poster").src = document.querySelector(".movie2-poster").src;
+                    document.getElementById("movie1Rating").textContent = document.getElementById("movie2Rating").textContent;
+        
+                    // Set new movie2 data
+                    document.querySelector(".movie2-info h2").textContent = `${newMovie.title} (${newMovie.year})`;
+                    document.querySelector(".movie2-poster").src = newMovie.poster;
+                    document.getElementById("movie2Rating").textContent = newMovie.rating;
+                    document.getElementById("ratingPlaceholder").textContent = "???"; // Hide rating again
+        
+                    // Hide movie2 rating again for the new round
+                    document.getElementById("movie2Rating").style.display = "none";
+                })
+                .catch(error => console.error("Error fetching new movie:", error));
+        }        
 
         function details(id){
             alert("You clicked on the movie poster with ID: " + id);

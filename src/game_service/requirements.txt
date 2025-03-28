@@ -1,3 +1,4 @@
 grpcio
 grpcio-tools
 flask
+flask_cors
