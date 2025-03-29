@@ -4,7 +4,7 @@ import grpc
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 from movie_pb2_grpc  import MovieServiceStub 
-from movie_pb2 import MovieRequest
+from movie_pb2 import MovieRequest, Empty
 from account_pb2 import Account
 from account_pb2_grpc import AccountServiceStub
 import random
@@ -60,9 +60,8 @@ def render_homepage(given_id):
 
 @app.route("/getRandom")
 def render_random():
-    randomMovieId = 1000000+random.randint(1,82447)
-    movie_request = MovieRequest(movieId=randomMovieId)
-    movie_response = movie_client.GetMovieById(movie_request)
+    
+    movie_response = movie_client.GetRandomMovie(request = Empty())
     #Ver isto ideia era mandar json com infos, web recebe e subsitui valores antigos de movie1 com estes ver como fazer isso
     movie_data = {
         'id': movie_response.movieId,
@@ -76,12 +75,8 @@ def render_random():
 
 @app.route("/getTwoRandom")
 def render_tworandom():
-    randomMovieId1 = 1000000+random.randint(1,82447)
-    randomMovieId2 = 1000000+random.randint(1,82447)
-    movie_request1 = MovieRequest(movieId=randomMovieId1)
-    movie_request2 = MovieRequest(movieId=randomMovieId2)
-    movie_response1 = movie_client.GetMovieById(movie_request1)
-    movie_response2 = movie_client.GetMovieById(movie_request2)
+    movie_response1 = movie_client.GetRandomMovie(request = Empty())
+    movie_response2 = movie_client.GetRandomMovie(request = Empty())
     return render_template(
         "gameScreen.html",
         movie1=movie_response1,
