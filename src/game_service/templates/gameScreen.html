@@ -72,7 +72,9 @@
     </style>
 </head>
 <body>
+
     <div class="container">
+        
         <!-- Left Movie -->
         <div class="movie-container">
             <h1>Your movie is:</h1>
@@ -86,13 +88,17 @@
 
         <!-- Score and Buttons in the Middle -->
         <div class="movie-rating">
+            <span id="hidden-text" class="hidden-text"></span>
             <span class="score" id="score">Your score : </span>
             <span id="movie2Rating" class="hidden-rating">{{ movie2.rating }}</span>
-            <div class="buttons">
+            <div class="buttons", id="game-buttons">
                 <button class="button" onclick="choice('Higher')">Higher</button>
                 <button class="button" onclick="choice('Lower')">Lower</button>
             </div>
-            <button id="nextMovie" class="button" onclick="nextMovie()">Next Movie</button>
+            <div class="buttons", id="next-button", style="display: none;">
+                <button id="nextMovie" class="button" onclick="nextMovie()">Next Movie</button>
+            </div>
+            
         </div>
 
         <!-- Right Movie -->
@@ -126,14 +132,18 @@
             let correctChoice = (choice === "Higher" && movie1Rating > movie2Rating) || (choice === "Lower" && movie1Rating < movie2Rating);
             if (correctChoice) {
                 score++;
-                alert("✅ Correct! Your score is now: " + score);
+                document.getElementById("hidden-text").textContent = "✅ Correct!";
                 document.getElementById("score").textContent = "Your score: "+ score;
+                document.getElementById("nextMovie").textContent  = "Next Movie!";
                 won = true;   
 
             }
             else {
-                alert("❌ Incorrect! Your score is: " + score);
+                document.getElementById("hidden-text").textContent = "❌ Incorrect!";
+                 document.getElementById("nextMovie").textContent  = "Try again!";
             }            
+            document.getElementById("next-button").style.display = "block";
+            document.getElementById("game-buttons").style.display = "none";
         }
 
         function nextMovie() {
@@ -142,6 +152,7 @@
                 return;
             }
             hasplayed = false;
+            
         
             // Fetch a new random movie
             fetch('http://127.0.0.1:5000/getRandom')
@@ -163,6 +174,9 @@
                     document.getElementById("movie2Rating").style.display = "none";
                 })
                 .catch(error => console.error("Error fetching new movie:", error));
+                document.getElementById("hidden-text").textContent = ""; // Clear the hidden text
+                document.getElementById("game-buttons").style.display = "block"; // Show the game buttons again
+                document.getElementById("next-button").style.display = "none"; // Hide the next button again
         }        
 
 function details(id) {
