@@ -114,55 +114,65 @@
     </div>
     <script>
 
+        let username = localStorage.getItem("loggedInUser");
+        let score = 0;
         let hasplayed = false;
-        let won = false;
-        let score = 0; 
-
+        let won = false; 
+    
         function choice(choice) {
-
             if (hasplayed) {
-                alert("You have already played this round. Please click 'Next Movie' to continue.");
+                alert("You have already played this round. Click 'Next Movie'.");
                 return;
             }
-            hasplayed = true; 
+            hasplayed = true;
+    
             const movie1Rating = parseFloat(document.getElementById("movie1Rating").textContent);
             const movie2Rating = parseFloat(document.getElementById("movie2Rating").textContent);
             document.getElementById("movie2Rating").style.display = "block";
             document.getElementById("ratingPlaceholder").textContent = "{{ movie2.rating }}";
-            let correctChoice = (choice === "Higher" && movie1Rating > movie2Rating) || (choice === "Lower" && movie1Rating < movie2Rating);
+    
+            let correctChoice = (choice === "Higher" && movie2Rating > movie1Rating) || (choice === "Lower" && movie2Rating < movie1Rating);
+            
             if (correctChoice) {
                 score++;
                 document.getElementById("hidden-text").textContent = "✅ Correct!";
-                document.getElementById("score").textContent = "Your score: "+ score;
-                document.getElementById("nextMovie").textContent  = "Next Movie!";
-                won = true;   
-
-            }
-            else {
+                document.getElementById("nextMovie").textContent = "Next Movie!";
+                won = true;
+            } else {
+                score = 0; // Reset score if the user loses
                 document.getElementById("hidden-text").textContent = "❌ Incorrect!";
-                document.getElementById("nextMovie").textContent  = "Try again!";
+                document.getElementById("nextMovie").textContent = "Try Again!";
+                updateHighScore(); // Update high score if the user lost
+            }
 
-                updateHighscore(score); // Update highscore if the user lost
-            }            
+            document.getElementById("score").textContent = "Your score: " + score;
+    
             document.getElementById("next-button").style.display = "block";
             document.getElementById("game-buttons").style.display = "none";
         }
-
-        function updateHighScore(finalScore) {
-            const username = localStorage.getItem("username"); // Get logged-in user
-            if (!username) return;
-        
+    
+        function updateHighScore() {
+            if (!username) {
+                console.error("No logged-in user found.");
+                return;
+            }
+    
             fetch("/updateHighScore", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ username: username, highScore: finalScore })
+                body: JSON.stringify({
+                    username: username,
+                    highScore: score
+                })
             })
             .then(response => response.json())
-            .then(data => console.log(data.message))
+            .then(data => {
+                console.log("High Score Updated:", data);
+            })
             .catch(error => console.error("Error updating high score:", error));
-        }        
+        }      
 
         function nextMovie() {
             if (!hasplayed) {

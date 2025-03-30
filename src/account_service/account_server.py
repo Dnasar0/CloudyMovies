@@ -89,26 +89,29 @@ class AccountServiceServicer(account_pb2_grpc.AccountServiceServicer):
             return account_pb2.Empty()    
         # Handle account deletion logic
 
-    def UpdateHighScore(self, request, context): 
+    def UpdateHighScore(self, request, context):
         try:
-            account_id = ObjectId(request.id)
-            account = accounts_collection.find_one_and_update(
-                {"_id": account_id},
-                {"$set": {
-                    "highScore": request.highScore
-                }}
-            )
-            if account:
-                print(f"Updated Account with ID: {request.id}")
-                return account_pb2.Empty()
-            else:
+            account = accounts_collection.find_one({"username": request.username})
+            if not account:
                 context.set_code(grpc.StatusCode.NOT_FOUND)
-                context.set_details("Account not found")
+                context.set_details("User not found")
                 return account_pb2.Empty()
-            
+
+            # Only update if the new score is higher
+            if request.highScore > account.get("highScore", 0):
+                accounts_collection.update_one(
+                    {"username": request.username},
+                    {"$set": {"highScore": request.highScore}}
+                )
+                print(f"High score updated for {request.username} to {request.highScore}")
+            else:
+                print(f"High score NOT updated for {request.username}, lower score provided.")
+
+            return account_pb2.Empty()
+        
         except Exception as e:
             context.set_code(grpc.StatusCode.INTERNAL)
-            context.set_details(f"Error updating Account: {str(e)}")
+            context.set_details(f"Error updating high score: {str(e)}")
             return account_pb2.Empty()
 
     def UpdateAccountType(self, request, context):

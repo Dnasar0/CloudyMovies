@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CloudyMovies</title>
 </head>
+
 <body>
     <h1>Login</h1>
-    <form action="/submit" method="post">
+    <form id="loginForm">
         <label for="username">User Name:</label><br>
         <input type="text" id="username" name="username" required><br><br>
 
@@ -22,5 +23,34 @@
 
         <button type="submit">Play</button>
     </form>
-</body>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent normal form submission
+            
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+            let accountType = document.querySelector('input[name="accountType"]:checked').value;
+
+            // Save the username in localStorage
+            localStorage.setItem("loggedInUser", username);
+
+            // Send the data to the backend
+            fetch("/submit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: `username=${username}&password=${password}&accountType=${accountType}`
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log("Server response:", data);
+                window.location.href = "/getTwoRandom"; // Redirect to the game screen
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+
+
 </html>

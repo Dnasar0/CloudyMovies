@@ -46,7 +46,26 @@ def create_account():
         return render_tworandom()
     except grpc.RpcError as e:
         return f"Error: {e.details()}"
+    
+@app.route("/updateHighScore", methods=["POST"])
+def update_high_score():
+    username = request.json["username"]
+    new_score = request.json["highScore"]
 
+    try:
+        print(f"Updating high score for {username}...")
+
+        # Call gRPC UpdateHighScore function
+        account_client.UpdateHighScore(Account(
+            username=username,
+            highScore=new_score
+        ))
+
+        print("High score update request sent!")
+        return jsonify({"message": "High score update request sent!"}), 200
+
+    except grpc.RpcError as e:
+        return jsonify({"error": e.details()}), 500
 
 @app.route("/get/<int:given_id>")
 def render_homepage(given_id):
