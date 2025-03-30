@@ -37,7 +37,7 @@ def create_account():
         print("Creating account...")
         # Call gRPC CreateAccount function
         account_client.CreateAccount(Account(
-            username=username,
+            username=username,  
             password=password,
             highScore=0,  # Default high score
             account_type=account_type

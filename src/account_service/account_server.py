@@ -5,7 +5,7 @@ import account_pb2_grpc
 from pymongo import MongoClient
 from bson import ObjectId
 
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient("mongodb://mongodb:27017/")
 db = client["cloudy_movies"]
 accounts_collection = db["accounts"]
 
@@ -25,7 +25,7 @@ class AccountServiceServicer(account_pb2_grpc.AccountServiceServicer):
             
         except Exception as e:
             context.set_code(grpc.StatusCode.INTERNAL)
-            context.set_details(f"Error creating tournament: {str(e)}")
+            context.set_details(f"Error creating account: {str(e)}")
             return account_pb2.Empty()            
 
     def GetAccountById(self, request, context):
