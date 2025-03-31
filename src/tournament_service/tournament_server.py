@@ -5,13 +5,14 @@ import tournament_pb2_grpc
 from pymongo import MongoClient
 from bson import ObjectId
 
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient("mongodb://mongodb:27017/")
 db = client["cloudy_movies"]
-accounts_collection = db["tournament"]
+tournaments_collection = db["tournaments"]
 
 class TournamentServiceServicer(tournament_pb2_grpc.TournamentServiceServicer):
     def CreateTournament(self, request, context):
         
+        print("Creating tournament...")
         try:        
             tournament_data = {
                 
@@ -20,12 +21,12 @@ class TournamentServiceServicer(tournament_pb2_grpc.TournamentServiceServicer):
                 "creator" : request.creator,
                 "prize" : request.prize,
                 "players" : [{
-                    "username" : player.username,
-                    "highScore" : player.highScore
+                    "username" : player.username
                 } for player in request.players]
             }
+            print(tournament_data)
             
-            result = accounts_collection.insert_one(tournament_data)
+            result = tournaments_collection.insert_one(tournament_data)
             
             if result.inserted_id:
                 print(f"Created tournament with ID: {result.inserted_id}")
@@ -40,7 +41,7 @@ class TournamentServiceServicer(tournament_pb2_grpc.TournamentServiceServicer):
         
         try:
             tournament_id = ObjectId(request.id)
-            tournament = accounts_collection.find_one({"_id": tournament_id})
+            tournament = tournaments_collection.find_one({"_id": tournament_id})
             
             if tournament:
                 return tournament_pb2.Tournament(
@@ -67,7 +68,7 @@ class TournamentServiceServicer(tournament_pb2_grpc.TournamentServiceServicer):
         
         try:
             tournament_id = ObjectId(request.id)
-            tournament = accounts_collection.find_one_and_update(
+            tournament = tournaments_collection.find_one_and_update(
                 {"_id": tournament_id},
                 {
                     "$set": {
@@ -100,7 +101,7 @@ class TournamentServiceServicer(tournament_pb2_grpc.TournamentServiceServicer):
         
         try:
             tournament_id = ObjectId(request.id)
-            result = accounts_collection.delete_one({"_id": tournament_id})
+            result = tournaments_collection.delete_one({"_id": tournament_id})
             if result.deleted_count > 0:
                 return tournament_pb2.Empty()
             else:
@@ -111,6 +112,46 @@ class TournamentServiceServicer(tournament_pb2_grpc.TournamentServiceServicer):
             context.set_code(grpc.StatusCode.INTERNAL)
             context.set_details(f"Error deleting tournament: {str(e)}")
             return tournament_pb2.Empty()
+        
+    def ListTournaments(self, request, context):
+        try:
+            tournaments = tournaments_collection.find()
+            for tournament in tournaments:
+                yield tournament_pb2.Tournament(
+                    id=str(tournament["_id"]),
+                    date=tournament["date"],
+                    name=tournament["name"],
+                    creator=tournament["creator"],
+                    prize=tournament["prize"],
+                    players=[tournament_pb2.Player(
+                        username=player["username"]
+                    ) for player in tournament["players"]]
+                )
+        except Exception as e:
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details(f"Error listing tournaments: {str(e)}")
+
+    def JoinTournament(self, request, context):
+        try:
+            tournament_id = ObjectId(request.id)
+            new_player = {"username": request.username}
+            
+            result = tournaments_collection.update_one(
+                {"_id": tournament_id},
+                {"$push": {"players": new_player}}
+            )
+            
+            if result.modified_count > 0:
+                print(f"Player {request.username} joined tournament {request.id}")
+                return tournament_pb2.Empty()
+            else:
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                context.set_details("Tournament not found or player already in tournament")
+                return tournament_pb2.Empty()
+        except Exception as e:
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details(f"Error joining tournament: {str(e)}")
+            return tournament_pb2.Empty()        
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

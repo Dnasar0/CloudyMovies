@@ -21,36 +21,39 @@
         <input type="radio" id="business" name="accountType" value="business" required>
         <label for="business">Premium</label><br><br>
 
-        <button type="submit">Play</button>
+        <button type="submit">Login</button>
     </form>
+
+    <div id="options" style="display: none;">
+        <h2>Choose an option</h2>
+        <button onclick="window.location.href='/getTwoRandom'">Play Game</button>
+        <button onclick="window.location.href='/tournament'">Tournaments</button>
+    </div>
 
     <script>
         document.getElementById("loginForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent normal form submission
-            
+            event.preventDefault(); 
+
             let username = document.getElementById("username").value;
             let password = document.getElementById("password").value;
             let accountType = document.querySelector('input[name="accountType"]:checked').value;
 
-            // Save the username in localStorage
             localStorage.setItem("loggedInUser", username);
+            localStorage.setItem("accountType", accountType);
 
-            // Send the data to the backend
             fetch("/submit", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: `username=${username}&password=${password}&accountType=${accountType}`
             })
             .then(response => response.text())
             .then(data => {
                 console.log("Server response:", data);
-                window.location.href = "/getTwoRandom"; // Redirect to the game screen
+                document.getElementById("loginForm").style.display = "none";
+                document.getElementById("options").style.display = "block"; 
             })
             .catch(error => console.error("Error:", error));
         });
     </script>
-
-
+</body>
 </html>

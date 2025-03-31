@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 
 import grpc
@@ -7,7 +8,8 @@ from movie_pb2_grpc  import MovieServiceStub
 from movie_pb2 import MovieRequest, Empty
 from account_pb2 import Account
 from account_pb2_grpc import AccountServiceStub
-import random
+from tournament_pb2 import Tournament
+from tournament_pb2_grpc import TournamentServiceStub
 
 
 app = Flask(__name__)
@@ -17,12 +19,18 @@ app.debug = True
 recommendations_host = os.getenv("RECOMMENDATIONS_HOST", "localhost")
 movie_connection = grpc.insecure_channel("movie_service:50052")
 account_connection = grpc.insecure_channel("account_service:50051")
+tournament_connection = grpc.insecure_channel("tournament_service:50053")
 account_client = AccountServiceStub(account_connection)
 movie_client = MovieServiceStub(movie_connection)
+tournament_client = TournamentServiceStub(tournament_connection)
 
 @app.route("/")
 def render_index():
     return render_template("firstScreen.html")
+
+@app.route("/tournament")
+def render_tournament():
+    return render_template("tournament.html")
 
 @app.route("/submit", methods=["POST"])
 def create_account():
@@ -101,6 +109,46 @@ def render_tworandom():
         movie1=movie_response1,
         movie2=movie_response2
     )
+    
+@app.route("/getTournaments", methods=["GET"])
+def get_tournaments():
+    tournaments_response = tournament_client.ListTournaments(Empty())  # Use the correct response object
+    return jsonify([{
+        "id": t.id,
+        "name": t.name,
+        "creator": t.creator,
+        "prize": t.prize,
+        "players": [{"username": p.username} for p in t.players]
+    } for t in tournaments_response.tournaments])  # Access tournaments from TournamentList
+
+
+@app.route("/createTournament", methods=["POST"])
+def create_tournament():
+    data = request.json
+    print(data)
+    tournament_client.CreateTournament(Tournament(
+        date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),  # Auto-generate date
+        name=data["name"],
+        creator=data["creator"],
+        prize=int(data["prize"]),  # Ensure prize is an integer
+        players=[Account(username=p["username"]) for p in data["players"]]
+    ))
+    return "Tournament Created", 200
+
+@app.route("/joinTournament", methods=["POST"])
+def join_tournament():
+    data = request.json
+    
+    tournament_id = data["tournamentId"]
+    username = data["username"]
+    
+    join_request = Tournament.JoinTournamentRequest(
+        tournament_id=tournament_id,
+        player=Account(username=username)
+    )
+    
+    tournament_client.JoinTournament(join_request)
+    return "Joined Tournament", 200
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)

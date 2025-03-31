@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournaments</title>
+</head>
+<body>
+    <h1>Available Tournaments</h1>
+    <div id="tournament-list"></div>
+    <button onclick="fetchTournaments()">Refresh List</button>
+
+    <div id="create-tournament" style="display: none;">
+        <h2>Create Tournament</h2>
+        <input type="text" id="tournamentName" placeholder="Tournament Name">
+        <input type="number" id="prize" placeholder="Prize Amount">
+        <button onclick="createTournament()">Create</button>
+    </div>
+
+    <script>
+        let username = localStorage.getItem("loggedInUser");
+        let accountType = localStorage.getItem("accountType");
+
+        function fetchTournaments() {
+            fetch("/getTournaments")
+                .then(response => response.json())
+                .then(data => {
+                    let list = document.getElementById("tournament-list");
+                    list.innerHTML = "";
+                    data.forEach(tournament => {
+                        let item = document.createElement("div");
+                        item.innerHTML = `<strong>${tournament.name}</strong> - Prize: ${tournament.prize} - Created by: ${tournament.creator}
+                            <button onclick="joinTournament('${tournament.id}')">Join</button>`;
+                        list.appendChild(item);
+                    });
+                })
+                .catch(error => console.error("Error fetching tournaments:", error));
+        }
+
+        function joinTournament(tournamentId) {
+            fetch("/joinTournament", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username: username, tournamentId: tournamentId })
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log("Joined tournament:", data);
+                fetchTournaments(); 
+            })
+            .catch(error => console.error("Error joining tournament:", error));
+        }
+
+        function createTournament() {
+            let name = document.getElementById("tournamentName").value;
+            let prize = parseInt(document.getElementById("prize").value);
+
+            fetch("/createTournament", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: name,
+                    creator: username,
+                    prize: prize,
+                    players: [{ username: username }]
+                })
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log("Tournament created:", data);
+                fetchTournaments(); 
+            })
+            .catch(error => console.error("Error creating tournament:", error));
+        }
+
+        if (accountType === "business") {
+            document.getElementById("create-tournament").style.display = "block";
+        }
+
+        fetchTournaments();
+    </script>
+</body>
+</html>

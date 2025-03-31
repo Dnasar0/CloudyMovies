@@ -41,7 +41,7 @@ class TournamentServiceStub(object):
                 _registered_method=True)
         self.GetTournament = channel.unary_unary(
                 '/tournament.TournamentService/GetTournament',
-                request_serializer=tournament__pb2.Tournament.SerializeToString,
+                request_serializer=tournament__pb2.TournamentId.SerializeToString,
                 response_deserializer=tournament__pb2.Tournament.FromString,
                 _registered_method=True)
         self.UpdateTournament = channel.unary_unary(
@@ -51,7 +51,17 @@ class TournamentServiceStub(object):
                 _registered_method=True)
         self.DeleteTournament = channel.unary_unary(
                 '/tournament.TournamentService/DeleteTournament',
-                request_serializer=tournament__pb2.Tournament.SerializeToString,
+                request_serializer=tournament__pb2.TournamentId.SerializeToString,
+                response_deserializer=tournament__pb2.Empty.FromString,
+                _registered_method=True)
+        self.ListTournaments = channel.unary_unary(
+                '/tournament.TournamentService/ListTournaments',
+                request_serializer=tournament__pb2.Empty.SerializeToString,
+                response_deserializer=tournament__pb2.TournamentList.FromString,
+                _registered_method=True)
+        self.JoinTournament = channel.unary_unary(
+                '/tournament.TournamentService/JoinTournament',
+                request_serializer=tournament__pb2.JoinTournamentRequest.SerializeToString,
                 response_deserializer=tournament__pb2.Empty.FromString,
                 _registered_method=True)
 
@@ -83,6 +93,20 @@ class TournamentServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ListTournaments(self, request, context):
+        """Fetch all tournaments
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def JoinTournament(self, request, context):
+        """Add player to a tournament
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_TournamentServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -93,7 +117,7 @@ def add_TournamentServiceServicer_to_server(servicer, server):
             ),
             'GetTournament': grpc.unary_unary_rpc_method_handler(
                     servicer.GetTournament,
-                    request_deserializer=tournament__pb2.Tournament.FromString,
+                    request_deserializer=tournament__pb2.TournamentId.FromString,
                     response_serializer=tournament__pb2.Tournament.SerializeToString,
             ),
             'UpdateTournament': grpc.unary_unary_rpc_method_handler(
@@ -103,7 +127,17 @@ def add_TournamentServiceServicer_to_server(servicer, server):
             ),
             'DeleteTournament': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteTournament,
-                    request_deserializer=tournament__pb2.Tournament.FromString,
+                    request_deserializer=tournament__pb2.TournamentId.FromString,
+                    response_serializer=tournament__pb2.Empty.SerializeToString,
+            ),
+            'ListTournaments': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListTournaments,
+                    request_deserializer=tournament__pb2.Empty.FromString,
+                    response_serializer=tournament__pb2.TournamentList.SerializeToString,
+            ),
+            'JoinTournament': grpc.unary_unary_rpc_method_handler(
+                    servicer.JoinTournament,
+                    request_deserializer=tournament__pb2.JoinTournamentRequest.FromString,
                     response_serializer=tournament__pb2.Empty.SerializeToString,
             ),
     }
@@ -159,7 +193,7 @@ class TournamentService(object):
             request,
             target,
             '/tournament.TournamentService/GetTournament',
-            tournament__pb2.Tournament.SerializeToString,
+            tournament__pb2.TournamentId.SerializeToString,
             tournament__pb2.Tournament.FromString,
             options,
             channel_credentials,
@@ -213,7 +247,61 @@ class TournamentService(object):
             request,
             target,
             '/tournament.TournamentService/DeleteTournament',
-            tournament__pb2.Tournament.SerializeToString,
+            tournament__pb2.TournamentId.SerializeToString,
+            tournament__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListTournaments(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/tournament.TournamentService/ListTournaments',
+            tournament__pb2.Empty.SerializeToString,
+            tournament__pb2.TournamentList.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def JoinTournament(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/tournament.TournamentService/JoinTournament',
+            tournament__pb2.JoinTournamentRequest.SerializeToString,
             tournament__pb2.Empty.FromString,
             options,
             channel_credentials,

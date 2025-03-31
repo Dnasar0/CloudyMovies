@@ -25,7 +25,7 @@ _sym_db = _symbol_database.Default()
 import account_pb2 as account__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10tournament.proto\x12\ntournament\x1a\raccount.proto\"k\n\nTournament\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0f\n\x07\x63reator\x18\x03 \x01(\t\x12\r\n\x05prize\x18\x04 \x01(\x05\x12!\n\x07players\x18\x05 \x03(\x0b\x32\x10.account.Account\"\x07\n\x05\x45mpty2\x91\x02\n\x11TournamentService\x12=\n\x10\x43reateTournament\x12\x16.tournament.Tournament\x1a\x11.tournament.Empty\x12?\n\rGetTournament\x12\x16.tournament.Tournament\x1a\x16.tournament.Tournament\x12=\n\x10UpdateTournament\x12\x16.tournament.Tournament\x1a\x11.tournament.Empty\x12=\n\x10\x44\x65leteTournament\x12\x16.tournament.Tournament\x1a\x11.tournament.Emptyb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10tournament.proto\x12\ntournament\x1a\raccount.proto\"w\n\nTournament\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04\x64\x61te\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x0f\n\x07\x63reator\x18\x04 \x01(\t\x12\r\n\x05prize\x18\x05 \x01(\x05\x12!\n\x07players\x18\x06 \x03(\x0b\x32\x10.account.Account\"\x07\n\x05\x45mpty\"=\n\x0eTournamentList\x12+\n\x0btournaments\x18\x01 \x03(\x0b\x32\x16.tournament.Tournament\"\x1a\n\x0cTournamentId\x12\n\n\x02id\x18\x01 \x01(\t\"P\n\x15JoinTournamentRequest\x12\x15\n\rtournament_id\x18\x01 \x01(\t\x12 \n\x06player\x18\x02 \x01(\x0b\x32\x10.account.Account2\x9f\x03\n\x11TournamentService\x12=\n\x10\x43reateTournament\x12\x16.tournament.Tournament\x1a\x11.tournament.Empty\x12\x41\n\rGetTournament\x12\x18.tournament.TournamentId\x1a\x16.tournament.Tournament\x12=\n\x10UpdateTournament\x12\x16.tournament.Tournament\x1a\x11.tournament.Empty\x12?\n\x10\x44\x65leteTournament\x12\x18.tournament.TournamentId\x1a\x11.tournament.Empty\x12@\n\x0fListTournaments\x12\x11.tournament.Empty\x1a\x1a.tournament.TournamentList\x12\x46\n\x0eJoinTournament\x12!.tournament.JoinTournamentRequest\x1a\x11.tournament.Emptyb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -33,9 +33,15 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'tournament_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
   _globals['_TOURNAMENT']._serialized_start=47
-  _globals['_TOURNAMENT']._serialized_end=154
-  _globals['_EMPTY']._serialized_start=156
-  _globals['_EMPTY']._serialized_end=163
-  _globals['_TOURNAMENTSERVICE']._serialized_start=166
-  _globals['_TOURNAMENTSERVICE']._serialized_end=439
+  _globals['_TOURNAMENT']._serialized_end=166
+  _globals['_EMPTY']._serialized_start=168
+  _globals['_EMPTY']._serialized_end=175
+  _globals['_TOURNAMENTLIST']._serialized_start=177
+  _globals['_TOURNAMENTLIST']._serialized_end=238
+  _globals['_TOURNAMENTID']._serialized_start=240
+  _globals['_TOURNAMENTID']._serialized_end=266
+  _globals['_JOINTOURNAMENTREQUEST']._serialized_start=268
+  _globals['_JOINTOURNAMENTREQUEST']._serialized_end=348
+  _globals['_TOURNAMENTSERVICE']._serialized_start=351
+  _globals['_TOURNAMENTSERVICE']._serialized_end=766
 # @@protoc_insertion_point(module_scope)

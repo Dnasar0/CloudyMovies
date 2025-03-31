@@ -5,18 +5,34 @@ package tournament;
 import "account.proto";
 
 message Tournament {
-  string date = 1;
-  string name = 2;
-  string creator = 3;
-  int32 prize = 4;
-  repeated account.Account players = 5;
+  string id = 1;  // Add an ID field to uniquely identify tournaments
+  string date = 2;
+  string name = 3;
+  string creator = 4;
+  int32 prize = 5;
+  repeated account.Account players = 6;
 }
 
 message Empty {}
 
+message TournamentList {
+  repeated Tournament tournaments = 1;
+}
+
+message TournamentId {
+  string id = 1;
+}
+
+message JoinTournamentRequest {
+  string tournament_id = 1;
+  account.Account player = 2;
+}
+
 service TournamentService {
   rpc CreateTournament (Tournament) returns (Empty);
-  rpc GetTournament (Tournament) returns (Tournament);
+  rpc GetTournament (TournamentId) returns (Tournament);
   rpc UpdateTournament (Tournament) returns (Empty);
-  rpc DeleteTournament (Tournament) returns (Empty);
+  rpc DeleteTournament (TournamentId) returns (Empty);
+  rpc ListTournaments (Empty) returns (TournamentList); // Fetch all tournaments
+  rpc JoinTournament (JoinTournamentRequest) returns (Empty); // Add player to a tournament
 }
