@@ -79,10 +79,11 @@
         <div class="movie-container">
             <h1>Your movie is:</h1>
             <div class="movie1-info">
+                <h1 id="movie1Id" style="display: none;">{{movie1.movieId}}</h1>
                 <h2>{{ movie1.title }} ({{ movie1.year }})({{movie1.movieId}})</h2
                 <p><strong>Genre:</strong> {{ movie1.genre }}</p>
                 <p><strong>Rating:</strong> <span id="movie1Rating">{{movie1.rating}}</span></p>
-                <img src="{{ movie1.poster }}"  onclick="details('{{movie1.movieId}}')" alt="Movie1 Poster" class="movie1-poster">
+                <img src="{{ movie1.poster }}"  onclick="details(document.getElementById('movie1Id').textContent)" alt="Movie1 Poster" class="movie1-poster">
             </div>
         </div>
 
@@ -105,10 +106,11 @@
         <div class="movie2-container">
             <h1>Your movie is (again):</h1>
             <div class="movie2-info">
+            <h1 id="movie2Id" style="display: none;">{{movie2.movieId}}</h1>
                 <h2>{{ movie2.title }} ({{ movie2.year }})</h2>
                 <p><strong>Genre:</strong> {{ movie2.genre }}</p>
                 <p><strong>Rating:</strong> <span id="ratingPlaceholder">???</span></p>
-                <img src="{{ movie2.poster }}" onclick="details('{{movie2.movieId}}')" alt="Movie2 Poster" class="movie2-poster">
+                <img src="{{ movie2.poster }}" onclick="details(document.getElementById('movie2Id').textContent)" alt="Movie2 Poster" class="movie2-poster">
             </div>
         </div>
     </div>
@@ -195,12 +197,14 @@
                     document.querySelector(".movie1-info p strong").textContent = `${document.querySelector(".movie2-info p strong").textContent}`;
                     document.querySelector(".movie1-poster").src = document.querySelector(".movie2-poster").src;
                     document.getElementById("movie1Rating").textContent = document.getElementById("movie2Rating").textContent;
+                    document.getElementById("movie1Id").textContent = document.getElementById("movie2Id").textContent;
                     
                     // Set new movie2 data
                     document.querySelector(".movie2-info h2").textContent = `${newMovie.title} (${newMovie.year})`;
                     document.querySelector(".movie2-poster").src = newMovie.poster;
                     document.getElementById("movie2Rating").textContent = newMovie.rating;
                     document.getElementById("ratingPlaceholder").textContent = "???"; // Hide rating again
+                    document.getElementById("movie2Id").textContent = newMovie.id; // Set movie2 ID
                     
                     // Hide movie2 rating again for the new round
                     document.getElementById("movie2Rating").style.display = "none";
