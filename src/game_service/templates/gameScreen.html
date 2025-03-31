@@ -139,10 +139,11 @@
                 document.getElementById("nextMovie").textContent = "Next Movie!";
                 won = true;
             } else {
-                score = 0; // Reset score if the user loses
+                
                 document.getElementById("hidden-text").textContent = "❌ Incorrect!";
                 document.getElementById("nextMovie").textContent = "Try Again!";
                 updateHighScore(); // Update high score if the user lost
+                score = 0; // Reset score if the user loses
             }
 
             document.getElementById("score").textContent = "Your score: " + score;
