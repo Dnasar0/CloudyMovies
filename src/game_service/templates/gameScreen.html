@@ -128,10 +128,10 @@
     
             const movie1Rating = parseFloat(document.getElementById("movie1Rating").textContent);
             const movie2Rating = parseFloat(document.getElementById("movie2Rating").textContent);
-            document.getElementById("movie2Rating").style.display = "block";
-            document.getElementById("ratingPlaceholder").textContent = "{{ movie2.rating }}";
+            document.getElementById("ratingPlaceholder").textContent = document.getElementById("movie2Rating").textContent;
     
-            let correctChoice = (choice === "Higher" && movie2Rating > movie1Rating) || (choice === "Lower" && movie2Rating < movie1Rating);
+            let correctChoice = (choice === "Higher" && movie2Rating > movie1Rating) || (choice === "Lower" && movie2Rating < movie1Rating || movie2Rating === movie1Rating);
+            console.log( "Your choice: " + choice + ", Movie 1 rating: " + movie1Rating + ", Movie 2 rating: " + movie2Rating);
             
             if (correctChoice) {
                 score++;
@@ -181,7 +181,10 @@
             }
             hasplayed = false;
             
-        
+            document.getElementById("hidden-text").textContent = "🔄 Loading new movie...";
+
+            document.getElementById("game-buttons").style.display = "none"; // Hide buttons
+            document.getElementById("next-button").style.display = "none"; // Hide next button
             // Fetch a new random movie
             fetch('http://127.0.0.1:5000/getRandom')
                 .then(response => response.json())  // Parse response as JSON
@@ -201,10 +204,13 @@
                     // Hide movie2 rating again for the new round
                     document.getElementById("movie2Rating").style.display = "none";
                 })
-                .catch(error => console.error("Error fetching new movie:", error));
-                document.getElementById("hidden-text").textContent = ""; // Clear the hidden text
-                document.getElementById("game-buttons").style.display = "block"; // Show the game buttons again
-                document.getElementById("next-button").style.display = "none"; // Hide the next button again
+                .catch(error => console.error("Error fetching new movie:", error))
+                .finally(() => {
+                    document.getElementById("hidden-text").textContent = ""; // Clear the hidden text
+                    document.getElementById("game-buttons").style.display = "block"; // Show the game buttons again
+                    document.getElementById("next-button").style.display = "none"; // Hide the next button again
+                });
+                
         }        
 
 function details(id) {
