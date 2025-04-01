@@ -150,5 +150,9 @@ def join_tournament():
     tournament_client.JoinTournament(join_request)
     return "Joined Tournament", 200
 
+@app.route("/account/<username>", methods=["GET"])
+def get_acount(username):
+    return
+
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)

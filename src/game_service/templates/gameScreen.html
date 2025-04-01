@@ -15,6 +15,22 @@
             height: 100vh;
             margin: 0;
         }
+        .account-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .account-button:hover {
+            background-color: #218838;
+        }
+
         .container {
             display: flex;
             align-items: center;
@@ -72,9 +88,8 @@
     </style>
 </head>
 <body>
-
+    <button class="account-button" onclick="showAccount()">Account</button>
     <div class="container">
-        
         <!-- Left Movie -->
         <div class="movie-container">
             <h1>Your movie is:</h1>
@@ -218,13 +233,17 @@
                 
         }        
 
-function details(id) {
-    if (!hasplayed) {
-        alert("You have to play the game first before you can see the details of the movie.");
-        return;
-    }
-    window.open('http://127.0.0.1:5000/get/' + id, '_blank');
-}
+        function details(id) {
+            if (!hasplayed) {
+                alert("You have to play the game first before you can see the details of the movie.");
+                return;
+            }
+            window.open('http://127.0.0.1:5000/get/' + id, '_blank');
+        }
+
+        function showAccount(){
+
+        }
 
     </script>
 </body>
