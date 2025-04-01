@@ -64,3 +64,10 @@ O objetivo principal é criar um jogo onde o jogador tenta adivinhar se o rating
 - **Front-end**: Angular
 - **Banco de Dados**: MongoDB
 - **Hospedagem**: Google Cloud
+
+
+--------------------------
+INSTRUÇÕES CORRER FICHEIRO 
+--------------------------
+
+Para correr o projeto, no diretório com o ficheiro docker, escreve-se "docker compose up".
