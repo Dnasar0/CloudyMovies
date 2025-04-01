@@ -57,21 +57,16 @@
         <form id="accountForm">
             <div class="input-group">
                 <label for="username">Username:{{account.username}}</label>
-                <input type="text" id="username" name="username" required>
             </div>
             <div class="input-group">
                 <label for="password">Password:{{account.password}}</label>
-                <input type="password" id="password" name="password" required>
             </div>
             <div class="input-group">
                 <label for="accountType">Account Type:{{account.account_type}}</label>
-                <input type="text" id="accountType" name="accountType" required>
             </div>
             <div class="input-group">
                 <label for="highscore">Highscore:{{account.highScore}}</label>
-                <input type="number" id="highscore" name="highscore" required>
             </div>
-            <button type="button" class="btn" onclick="displayAccountDetails()">Submit</button>
         </form>
         <div id="output" class="output" style="display: none;"></div>
     </div>

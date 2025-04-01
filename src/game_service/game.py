@@ -155,7 +155,7 @@ def get_acount(username):
     accountRequest = AccountRequest(username=username)
     account_response = account_client.GetAccount(accountRequest)
     return render_template(
-        "accountScreen.html",
+        "account.html",
         account=account_response
     )
 

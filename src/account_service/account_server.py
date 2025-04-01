@@ -34,7 +34,7 @@ class AccountServiceServicer(account_pb2_grpc.AccountServiceServicer):
             account = accounts_collection.find_one({"username": account_name})
             if account:
                 return account_pb2.Account(
-                    id=str(account["_id"]),
+                    id=int(1),
                     username=str(account["username"]),
                     password=str(account["password"]),
                     highScore=int(account["highScore"]),
