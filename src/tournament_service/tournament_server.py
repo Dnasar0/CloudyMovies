@@ -138,16 +138,16 @@ class TournamentServiceServicer(tournament_pb2_grpc.TournamentServiceServicer):
 
     def JoinTournament(self, request, context):
         try:
-            tournament_id = ObjectId(request.id)
-            new_player = {"username": request.username}
+            tournament_id = ObjectId(request.tournament_id)  # Fix field name
+            new_player = {"username": request.player.username}  # Fix access to player username
             
             result = tournaments_collection.update_one(
                 {"_id": tournament_id},
-                {"$push": {"players": new_player}}
+                {"$push": {"players": new_player}}  # Push new player to the players array
             )
-            
+
             if result.modified_count > 0:
-                print(f"Player {request.username} joined tournament {request.id}")
+                print(f"Player {request.player.username} joined tournament {request.tournament_id}")
                 return tournament_pb2.Empty()
             else:
                 context.set_code(grpc.StatusCode.NOT_FOUND)
@@ -156,7 +156,8 @@ class TournamentServiceServicer(tournament_pb2_grpc.TournamentServiceServicer):
         except Exception as e:
             context.set_code(grpc.StatusCode.INTERNAL)
             context.set_details(f"Error joining tournament: {str(e)}")
-            return tournament_pb2.Empty()        
+            return tournament_pb2.Empty()
+        
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

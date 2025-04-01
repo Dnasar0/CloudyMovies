@@ -41,7 +41,7 @@
             fetch("/joinTournament", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username: username, tournamentId: tournamentId })
+                body: JSON.stringify({ tournamentId: tournamentId, username: username  })
             })
             .then(response => response.text())
             .then(data => {

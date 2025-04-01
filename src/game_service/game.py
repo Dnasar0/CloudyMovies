@@ -8,7 +8,7 @@ from movie_pb2_grpc  import MovieServiceStub
 from movie_pb2 import MovieRequest, Empty
 from account_pb2 import Account, AccountRequest
 from account_pb2_grpc import AccountServiceStub
-from tournament_pb2 import Tournament
+from tournament_pb2 import Tournament, JoinTournamentRequest
 from tournament_pb2_grpc import TournamentServiceStub
 
 
@@ -143,7 +143,7 @@ def join_tournament():
     tournament_id = data["tournamentId"]
     username = data["username"]
     
-    join_request = Tournament.JoinTournamentRequest(
+    join_request = JoinTournamentRequest(
         tournament_id=tournament_id,
         player=Account(username=username)
     )
