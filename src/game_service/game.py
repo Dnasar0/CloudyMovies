@@ -6,7 +6,7 @@ from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 from movie_pb2_grpc  import MovieServiceStub 
 from movie_pb2 import MovieRequest, Empty
-from account_pb2 import Account
+from account_pb2 import Account, AccountRequest
 from account_pb2_grpc import AccountServiceStub
 from tournament_pb2 import Tournament
 from tournament_pb2_grpc import TournamentServiceStub
@@ -152,7 +152,12 @@ def join_tournament():
 
 @app.route("/account/<username>", methods=["GET"])
 def get_acount(username):
-    return
+    accountRequest = AccountRequest(username=username)
+    account_response = account_client.GetAccount(accountRequest)
+    return render_template(
+        "accountScreen.html",
+        account=account_response
+    )
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)

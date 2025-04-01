@@ -23,9 +23,6 @@ class MovieService(movie_pb2_grpc.MovieServiceServicer):
 
     def GetRandomMovie(self, request, context):
         
-        
-        
-
         while True:
             movie = movies_collection.aggregate([{"$sample": {"size": 1}}]).next()
             id = movie["id"]
