@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\raccount.proto\x12\x07\x61\x63\x63ount\"V\n\x07\x41\x63\x63ount\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\x11\n\thighScore\x18\x03 \x01(\x05\x12\x14\n\x0c\x61\x63\x63ount_type\x18\x04 \x01(\t\"\"\n\x0e\x41\x63\x63ountRequest\x12\x10\n\x08username\x18\x01 \x01(\t\"\x07\n\x05\x45mpty2\xce\x02\n\x0e\x41\x63\x63ountService\x12\x31\n\rCreateAccount\x12\x10.account.Account\x1a\x0e.account.Empty\x12\x37\n\nGetAccount\x12\x17.account.AccountRequest\x1a\x10.account.Account\x12\x31\n\rUpdateAccount\x12\x10.account.Account\x1a\x0e.account.Empty\x12\x31\n\rDeleteAccount\x12\x10.account.Account\x1a\x0e.account.Empty\x12\x33\n\x0fUpdateHighScore\x12\x10.account.Account\x1a\x0e.account.Empty\x12\x35\n\x11UpdateAccountType\x12\x10.account.Account\x1a\x0e.account.Emptyb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\raccount.proto\x12\x07\x61\x63\x63ount\"b\n\x07\x41\x63\x63ount\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08username\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\x12\x11\n\thighScore\x18\x04 \x01(\x05\x12\x14\n\x0c\x61\x63\x63ount_type\x18\x05 \x01(\t\"\"\n\x0e\x41\x63\x63ountRequest\x12\x10\n\x08username\x18\x01 \x01(\t\"\x07\n\x05\x45mpty2\xce\x02\n\x0e\x41\x63\x63ountService\x12\x31\n\rCreateAccount\x12\x10.account.Account\x1a\x0e.account.Empty\x12\x37\n\nGetAccount\x12\x17.account.AccountRequest\x1a\x10.account.Account\x12\x31\n\rUpdateAccount\x12\x10.account.Account\x1a\x0e.account.Empty\x12\x31\n\rDeleteAccount\x12\x10.account.Account\x1a\x0e.account.Empty\x12\x33\n\x0fUpdateHighScore\x12\x10.account.Account\x1a\x0e.account.Empty\x12\x35\n\x11UpdateAccountType\x12\x10.account.Account\x1a\x0e.account.Emptyb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -32,11 +32,11 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'account_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
   _globals['_ACCOUNT']._serialized_start=26
-  _globals['_ACCOUNT']._serialized_end=112
-  _globals['_ACCOUNTREQUEST']._serialized_start=114
-  _globals['_ACCOUNTREQUEST']._serialized_end=148
-  _globals['_EMPTY']._serialized_start=150
-  _globals['_EMPTY']._serialized_end=157
-  _globals['_ACCOUNTSERVICE']._serialized_start=160
-  _globals['_ACCOUNTSERVICE']._serialized_end=494
+  _globals['_ACCOUNT']._serialized_end=124
+  _globals['_ACCOUNTREQUEST']._serialized_start=126
+  _globals['_ACCOUNTREQUEST']._serialized_end=160
+  _globals['_EMPTY']._serialized_start=162
+  _globals['_EMPTY']._serialized_end=169
+  _globals['_ACCOUNTSERVICE']._serialized_start=172
+  _globals['_ACCOUNTSERVICE']._serialized_end=506
 # @@protoc_insertion_point(module_scope)
