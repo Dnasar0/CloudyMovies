@@ -116,17 +116,22 @@ class TournamentServiceServicer(tournament_pb2_grpc.TournamentServiceServicer):
     def ListTournaments(self, request, context):
         try:
             tournaments = tournaments_collection.find()
-            for tournament in tournaments:
-                yield tournament_pb2.Tournament(
-                    id=str(tournament["_id"]),
-                    date=tournament["date"],
-                    name=tournament["name"],
-                    creator=tournament["creator"],
-                    prize=tournament["prize"],
-                    players=[tournament_pb2.Player(
-                        username=player["username"]
-                    ) for player in tournament["players"]]
-                )
+            tournament_list = tournament_pb2.TournamentList()
+
+# Add all tournaments to the protobuf message
+            for data in tournaments:
+                tournament = tournament_list.tournaments.add()
+                tournament.id = str(data.get("_id", ""))
+                tournament.date = data.get("date", "")
+                tournament.name = data.get("name", "Unknown Tournament")
+                tournament.creator = data.get("creator", "Unknown")
+                tournament.prize = data.get("prize", 0)
+
+                for player_data in data.get("players", []):
+                    player = tournament.players.add()
+                    player.id = player_data.get("id", "")
+                    player.username = player_data.get("username", "")
+            return tournament_list
         except Exception as e:
             context.set_code(grpc.StatusCode.INTERNAL)
             context.set_details(f"Error listing tournaments: {str(e)}")

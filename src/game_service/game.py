@@ -112,7 +112,7 @@ def render_tworandom():
     
 @app.route("/getTournaments", methods=["GET"])
 def get_tournaments():
-    tournaments_response = tournament_client.ListTournaments(Empty())  # Use the correct response object
+    tournaments_response = tournament_client.ListTournaments(request = Empty())  # Use the correct response object
     return jsonify([{
         "id": t.id,
         "name": t.name,
@@ -120,6 +120,7 @@ def get_tournaments():
         "prize": t.prize,
         "players": [{"username": p.username} for p in t.players]
     } for t in tournaments_response.tournaments])  # Access tournaments from TournamentList
+
 
 
 @app.route("/createTournament", methods=["POST"])
