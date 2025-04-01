@@ -35,10 +35,10 @@ class AccountServiceServicer(account_pb2_grpc.AccountServiceServicer):
             if account:
                 return account_pb2.Account(
                     id=str(account["_id"]),
-                    username=account["username"],
-                    password=account["password"],
-                    highScore=account["highScore"],
-                    account_type=account["account_type"]
+                    username=str(account["username"]),
+                    password=str(account["password"]),
+                    highScore=int(account["highScore"]),
+                    account_type=str(account["account_type"])
                 )
             else:
                 context.set_code(grpc.StatusCode.NOT_FOUND)
