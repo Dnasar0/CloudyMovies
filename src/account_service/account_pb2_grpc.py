@@ -41,7 +41,7 @@ class AccountServiceStub(object):
                 _registered_method=True)
         self.GetAccount = channel.unary_unary(
                 '/account.AccountService/GetAccount',
-                request_serializer=account__pb2.Account.SerializeToString,
+                request_serializer=account__pb2.AccountRequest.SerializeToString,
                 response_deserializer=account__pb2.Account.FromString,
                 _registered_method=True)
         self.UpdateAccount = channel.unary_unary(
@@ -115,7 +115,7 @@ def add_AccountServiceServicer_to_server(servicer, server):
             ),
             'GetAccount': grpc.unary_unary_rpc_method_handler(
                     servicer.GetAccount,
-                    request_deserializer=account__pb2.Account.FromString,
+                    request_deserializer=account__pb2.AccountRequest.FromString,
                     response_serializer=account__pb2.Account.SerializeToString,
             ),
             'UpdateAccount': grpc.unary_unary_rpc_method_handler(
@@ -191,7 +191,7 @@ class AccountService(object):
             request,
             target,
             '/account.AccountService/GetAccount',
-            account__pb2.Account.SerializeToString,
+            account__pb2.AccountRequest.SerializeToString,
             account__pb2.Account.FromString,
             options,
             channel_credentials,
