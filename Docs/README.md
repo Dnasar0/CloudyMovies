@@ -70,4 +70,4 @@ O objetivo principal é criar um jogo onde o jogador tenta adivinhar se o rating
 INSTRUÇÕES CORRER FICHEIRO 
 --------------------------
 
-Para correr o projeto, no diretório com o ficheiro docker, escreve-se "docker compose up".
+Para correr o projeto, no diretório com o ficheiro docker, escreve-se "docker compose up". Depois correr o script (script.py) para popular DB. E abrir link que aparece quando docker compose up acabar de correr.
