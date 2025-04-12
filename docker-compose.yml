@@ -5,6 +5,8 @@ services:
         volumes:
             - ./src/account_service/requirements.txt:/app/requirements.txt
             - ./src/account_service/account_server.py:/app/account_server.py
+            - ./src/account_service/account_pb2_grpc.py:/app/account_pb2_grpc.py
+            - ./src/account_service/account_pb2.py:/app/account_pb2.py
         working_dir: /app
         expose:
             - "50051"
@@ -22,6 +24,10 @@ services:
         volumes:
             - ./src/tournament_service/requirements.txt:/app/requirements.txt
             - ./src/tournament_service/tournament_server.py:/app/tournament_server.py
+            - ./src/tournament_service/tournament_pb2_grpc.py:/app/tournament_pb2_grpc.py
+            - ./src/tournament_service/tournament_pb2.py:/app/tournament_pb2.py
+            - ./src/account_service/account_pb2_grpc.py:/app/account_pb2_grpc.py
+            - ./src/account_service/account_pb2.py:/app/account_pb2.py
         working_dir: /app
         command: bash -c "pip install -r requirements.txt && python -u tournament_server.py"
         expose:
@@ -39,6 +45,8 @@ services:
         volumes:
             - ./src/movie_service/requirements.txt:/app/requirements.txt
             - ./src/movie_service/movie_server.py:/app/movie_server.py
+            - ./src/movie_service/movie_pb2_grcp.py:/app/movie_pb2_grcp.py
+            - ./src/movie_service/movie_pb2.py:/app/movie_pb2.py
         working_dir: /app
         expose:
             - "50052"
@@ -76,7 +84,6 @@ services:
             - "27017:27017"
         expose:
             - "27017"
-        command: ["mongod", "--config", "/etc/mongod.conf"]
         # Uncomment the line below to persist MongoDB data across container restarts
         #   - ./mongo-data:/data/db
         # Uncomment the lines below to enable authentication in MongoDB
