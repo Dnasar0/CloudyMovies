@@ -1,9 +1,10 @@
 services:
-    account_service:
+    account-service:
         image: python:3.12.9
-        container_name: account_service
+        container_name: account-service
         volumes:
-            - ./src/account_service:/app
+            - ./src/account_service/requirements.txt:/app/requirements.txt
+            - ./src/account_service/account_server.py:/app/account_server.py
         working_dir: /app
         expose:
             - "50051"
@@ -15,11 +16,12 @@ services:
         networks:
             - network
 
-    tournament_service:
+    tournament-service:
         image: python:3.12.9
-        container_name: tournament_service
+        container_name: tournament-service
         volumes:
-            - ./src/tournament_service:/app
+            - ./src/tournament_service/requirements.txt:/app/requirements.txt
+            - ./src/tournament_service/tournament_server.py:/app/tournament_server.py
         working_dir: /app
         command: bash -c "pip install -r requirements.txt && python -u tournament_server.py"
         expose:
@@ -31,11 +33,12 @@ services:
         networks:
             - network
 
-    movie_service:
+    movie-service:
         image: python:3.12.9
-        container_name: movie_service
+        container_name: movie-service
         volumes:
-            - ./src/movie_service:/app
+            - ./src/movie_service/requirements.txt:/app/requirements.txt
+            - ./src/movie_service/movie_server.py:/app/movie_server.py
         working_dir: /app
         expose:
             - "50052"
@@ -48,9 +51,10 @@ services:
             - network
     frontend:
         image: python:3.12.9
-        container_name: game_service
+        container_name: game-service
         volumes:
-            - ./src/game_service:/app
+            - ./src/game_service/requirements.txt:/app/requirements.txt
+            - ./src/game_service/game.py:/app/game.py
         working_dir: /app
         expose:
             - "5000"
@@ -58,9 +62,9 @@ services:
             - "5000:5000"
         command: bash -c "pip install -r requirements.txt && python -u game.py"
         depends_on:
-            - movie_service
-            - tournament_service
-            - account_service
+            - movie-service
+            - tournament-service
+            - account-service
             - mongodb
         networks:
             - network
@@ -73,9 +77,6 @@ services:
         expose:
             - "27017"
         command: ["mongod", "--config", "/etc/mongod.conf"]
-        volumes:
-            - ./mongod.conf:/etc/mongod.conf # Mount custom config
-            - ./mongo_logs:/var/log/mongodb
         # Uncomment the line below to persist MongoDB data across container restarts
         #   - ./mongo-data:/data/db
         # Uncomment the lines below to enable authentication in MongoDB
