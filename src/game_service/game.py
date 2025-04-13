@@ -17,9 +17,9 @@ CORS(app)
 app.debug = True
 
 recommendations_host = os.getenv("RECOMMENDATIONS_HOST", "localhost")
-movie_connection = grpc.insecure_channel("movie_service:50052")
-account_connection = grpc.insecure_channel("account_service:50051")
-tournament_connection = grpc.insecure_channel("tournament_service:50053")
+movie_connection = grpc.insecure_channel("movie-service:50052")
+account_connection = grpc.insecure_channel("account-service:50051")
+tournament_connection = grpc.insecure_channel("tournament-service:50053")
 account_client = AccountServiceStub(account_connection)
 movie_client = MovieServiceStub(movie_connection)
 tournament_client = TournamentServiceStub(tournament_connection)
