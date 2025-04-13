@@ -69,6 +69,11 @@ services:
             - ./src/movie_service/movie_pb2.py:/app/movie_pb2.py                    
             - ./src/tournament_service/tournament_pb2_grpc.py:/app/tournament_pb2_grpc.py
             - ./src/tournament_service/tournament_pb2.py:/app/tournament_pb2.py            
+            - ./src/game_service/templates/account.html:/app/templates/account.html
+            - ./src/game_service/templates/tournament.html:/app/templates/tournament.html
+            - ./src/game_service/templates/firstScreen.html:/app/templates/firstScreen.html
+            - ./src/game_service/templates/game1Screen.html:/app/templates/game1Screen.html
+            - ./src/game_service/templates/gameScreen.html:/app/templates/gameScreen.html
         working_dir: /app
         expose:
             - "5000"
