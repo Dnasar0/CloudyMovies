@@ -45,7 +45,7 @@ services:
         volumes:
             - ./src/movie_service/requirements.txt:/app/requirements.txt
             - ./src/movie_service/movie_server.py:/app/movie_server.py
-            - ./src/movie_service/movie_pb2_grcp.py:/app/movie_pb2_grcp.py
+            - ./src/movie_service/movie_pb2_grpc.py:/app/movie_pb2_grpc.py
             - ./src/movie_service/movie_pb2.py:/app/movie_pb2.py
         working_dir: /app
         expose:
@@ -65,8 +65,8 @@ services:
             - ./src/game_service/game.py:/app/game.py
             - ./src/account_service/account_pb2_grpc.py:/app/account_pb2_grpc.py
             - ./src/account_service/account_pb2.py:/app/account_pb2.py  
-            - ./src/movie_service/movie_pb2_grcp.py:/app/movie_pb2_grcp.py
-            - ./src/movie_service/movie_pb2.py:/app/movie_pb2.py                      
+            - ./src/movie_service/movie_pb2_grpc.py:/app/movie_pb2_grpc.py
+            - ./src/movie_service/movie_pb2.py:/app/movie_pb2.py                    
             - ./src/tournament_service/tournament_pb2_grpc.py:/app/tournament_pb2_grpc.py
             - ./src/tournament_service/tournament_pb2.py:/app/tournament_pb2.py            
         working_dir: /app
