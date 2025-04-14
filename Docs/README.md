@@ -79,7 +79,7 @@ Nós para correr isto no wsl tivemos que instalar o kompose, para gerar os fiche
 
 - kompose convert
 
-Para iniciar o minikube, faz-se:
+Tem de se ter o docker desktop ligado. Para iniciar o minikube, faz-se:
 
 - minikube start
 
