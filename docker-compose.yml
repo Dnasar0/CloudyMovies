@@ -10,7 +10,7 @@ services:
         working_dir: /app
         ports:
             - "50051:50051"
-        command: bash -c "pip install -r requirements.txt && python -u script.py && python -u account_server.py"
+        command: bash -c "pip install -r requirements.txt && python -u account_server.py"
         depends_on:
             - mongodb
         networks:
@@ -47,7 +47,7 @@ services:
         working_dir: /app
         ports:
             - "50052:50052"
-        command: bash -c "pip install -r requirements.txt && python -u movie_server.py"
+        command: bash -c "pip install -r requirements.txt && python -u script.py && python -u movie_server.py"
         depends_on:
             - mongodb
         networks:
