@@ -71,3 +71,50 @@ INSTRUÇÕES CORRER FICHEIRO
 --------------------------
 
 Para correr o projeto, no diretório com o ficheiro docker, escreve-se "docker compose up". Depois correr o script (script.py) para popular DB. E abrir link que aparece quando docker compose up acabar de correr.
+
+
+Para o Henras Tenras:
+
+Nós para correr isto no wsl tivemos que instalar o kompose, para gerar os ficheiros yaml kubernets a partir do ficheiro docker, fizemos: 
+
+- kompose convert
+
+Para iniciar o minikube, faz-se:
+
+- minikube start
+
+Para parar o minikube e apagar os containers:
+
+- monikube stop; minikube delete
+
+Para correr os ficheiros kubernets (atenção, tem de se apagar o ficheiro docker compose para fazermos isto):
+
+- Editar frontend-service.yaml para ter isto: 
+spec:
+  type: LoadBalancer
+  selector:
+    io.kompose.service: frontend
+  ports:
+    - port: 80            # Publicly exposed port (HTTP)
+      targetPort: 5000    # Your frontend app’s internal port
+
+- Inserir comando kubectl apply -f .
+
+Para verificar o estado de cada serviço:
+
+- watch -n 2 kubectl get pods
+
+Para dar expose do mongodb para depois editar o ficheiro script, e alterar o porto para popular db fazer:
+
+- minikube service mongodb
+
+Para dar expose do frontend, fazer:
+
+- minikube service frontend
+
+Depois é entrar no frontend e testar as cenas. Por agora falta o account
+
+Caso se queira verificar algum log, por exemplo o do frontend, faz-se:
+
+- kubectl logs <nome do pod>
+
