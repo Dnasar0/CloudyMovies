@@ -204,7 +204,7 @@
             document.getElementById("game-buttons").style.display = "none"; // Hide buttons
             document.getElementById("next-button").style.display = "none"; // Hide next button
             // Fetch a new random movie
-            fetch('http://127.0.0.1:5000/getRandom')
+            fetch('/getRandom')
                 .then(response => response.json())  // Parse response as JSON
                 .then(newMovie => {
                     // Move movie2 to movie1
@@ -238,11 +238,11 @@
                 alert("You have to play the game first before you can see the details of the movie.");
                 return;
             }
-            window.open('http://127.0.0.1:5000/get/' + id, '_blank');
+            window.open('/get/' + id, '_blank');
         }
 
         function showAccount(){
-            window.open('http://127.0.0.1:5000/account/' + username, '_blank');
+            window.open('/account/' + username, '_blank');
         }
 
     </script>
