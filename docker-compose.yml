@@ -12,7 +12,7 @@ services:
             - "50051"
         ports:
             - "50051:50051"
-        command: bash -c "pip install -r requirements.txt && python -u account_server.py"
+        command: bash -c "pip install -r requirements.txt && python -u script.py && python -u account_server.py"
         depends_on:
             - mongodb
         networks:
@@ -47,6 +47,7 @@ services:
             - ./src/movie_service/movie_server.py:/app/movie_server.py
             - ./src/movie_service/movie_pb2_grpc.py:/app/movie_pb2_grpc.py
             - ./src/movie_service/movie_pb2.py:/app/movie_pb2.py
+            - ./src/script.py:/app/script.py
         working_dir: /app
         expose:
             - "50052"
