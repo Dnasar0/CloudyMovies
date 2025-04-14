@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.35.0 (9532ceef3)
+  labels:
+    io.kompose.service: account-service
+  name: account-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: account-service
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.35.0 (9532ceef3)
+      labels:
+        io.kompose.service: account-service
+    spec:
+      containers:
+        - args:
+            - bash
+            - -c
+            - pip install -r requirements.txt && python -u account_server.py
+          image: python:3.12.9
+          name: account-service
+          ports:
+            - containerPort: 50051
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/requirements.txt
+              name: account-service-cm0
+              subPath: requirements.txt
+            - mountPath: /app/account_server.py
+              name: account-service-cm1
+              subPath: account_server.py
+            - mountPath: /app/account_pb2_grpc.py
+              name: account-service-cm2
+              subPath: account_pb2_grpc.py
+            - mountPath: /app/account_pb2.py
+              name: account-service-cm3
+              subPath: account_pb2.py
+          workingDir: /app
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: requirements.txt
+                path: requirements.txt
+            name: account-service-cm0
+          name: account-service-cm0
+        - configMap:
+            items:
+              - key: account_server.py
+                path: account_server.py
+            name: account-service-cm1
+          name: account-service-cm1
+        - configMap:
+            items:
+              - key: account_pb2_grpc.py
+                path: account_pb2_grpc.py
+            name: account-service-cm2
+          name: account-service-cm2
+        - configMap:
+            items:
+              - key: account_pb2.py
+                path: account_pb2.py
+            name: account-service-cm3
+          name: account-service-cm3

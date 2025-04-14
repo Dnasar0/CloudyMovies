@@ -1,0 +1,87 @@
+apiVersion: v1
+data:
+  game1Screen.html: |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Your Movie</title>
+        <style>
+            /* Center everything */
+            body {
+                display: flex;
+                justify-content: center;   /* Centers horizontally */
+                align-items: center;       /* Centers vertically */
+                height: 100vh;             /* Full height of viewport */
+                margin: 0;
+                font-family: Arial, sans-serif;
+                background-color: #f8f9fa; /* Light background for contrast */
+            }
+
+            .container {
+                display: flex;
+                flex-direction: column;  /* Stack items vertically */
+                align-items: center;     /* Center items horizontally */
+                text-align: center;
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+
+            .movie-container {
+                max-width: 600px;  /* Limit width for better centering */
+            }
+
+            .movie-poster {
+                max-width: 100%;
+                height: auto;
+                border: 1px solid #ccc;
+                margin-top: 10px;
+                border-radius: 8px;
+            }
+
+            .buttons {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                margin-top: 20px;
+            }
+
+            .button {
+                padding: 10px 20px;
+                background-color: #007BFF;
+                color: white;
+                border: none;
+                cursor: pointer;
+                border-radius: 5px;
+                transition: background-color 0.3s;
+            }
+
+            .button:hover {
+                background-color: #0056b3;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="movie-container">
+                <h1>Your movie is:</h1>
+                <h2>{{ movie.title }} ({{ movie.year }})</h2>
+                <p><strong>Genre:</strong> {{ movie.genre }}</p>
+                <p><strong>Rating:</strong> {{ movie.rating }}</p>
+                <p><strong>Tagline:</strong> {{ movie.tagline }}</p>
+                <p><strong>Description:</strong> {{ movie.description }}</p>
+                <img src="{{ movie.poster }}" alt="Movie Poster" class="movie-poster">
+            </div>
+        </div>
+    </body>
+    </html>
+kind: ConfigMap
+metadata:
+  annotations:
+    use-subpath: "true"
+  labels:
+    io.kompose.service: frontend
+  name: frontend-cm11

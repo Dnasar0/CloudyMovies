@@ -1,0 +1,105 @@
+apiVersion: v1
+data:
+  account.html: |-
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Account Details</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+            }
+            .container {
+                max-width: 400px;
+                margin: auto;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                background-color: #f9f9f9;
+            }
+            .input-group {
+                margin-bottom: 15px;
+            }
+            .input-group label {
+                display: block;
+                margin-bottom: 5px;
+            }
+            .input-group input {
+                width: 100%;
+                padding: 8px;
+                box-sizing: border-box;
+            }
+            .btn {
+                display: block;
+                width: 100%;
+                padding: 10px;
+                background-color: #007BFF;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .btn:hover {
+                background-color: #0056b3;
+            }
+            .output {
+                margin-top: 20px;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                background-color: #e9ecef;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>Account Details</h2>
+            <form id="accountForm">
+                <div class="input-group">
+                    <label for="username">Username:{{account.username}}</label>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password:{{account.password}}</label>
+                </div>
+                <div class="input-group">
+                    <label for="accountType">Account Type:{{account.account_type}}</label>
+                </div>
+                <div class="input-group">
+                    <label for="highscore">Highscore:{{account.highScore}}</label>
+                </div>
+            </form>
+            <div id="output" class="output" style="display: none;"></div>
+        </div>
+
+        <script>
+            function displayAccountDetails() {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const accountType = document.getElementById('accountType').value;
+                const highscore = document.getElementById('highscore').value;
+
+                const outputDiv = document.getElementById('output');
+                outputDiv.style.display = 'block';
+                outputDiv.innerHTML = `
+                    <p>Your account details are:</p>
+                    <ul>
+                        <li><strong>Username:</strong> ${username}</li>
+                        <li><strong>Password:</strong> ${password}</li>
+                        <li><strong>Account Type:</strong> ${accountType}</li>
+                        <li><strong>Highscore:</strong> ${highscore}</li>
+                    </ul>
+                `;
+            }
+        </script>
+    </body>
+    </html></div></form></div>
+kind: ConfigMap
+metadata:
+  annotations:
+    use-subpath: "true"
+  labels:
+    io.kompose.service: frontend
+  name: frontend-cm8

@@ -1,0 +1,155 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.35.0 (9532ceef3)
+  labels:
+    io.kompose.service: frontend
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.35.0 (9532ceef3)
+      labels:
+        io.kompose.service: frontend
+    spec:
+      containers:
+        - args:
+            - bash
+            - -c
+            - pip install -r requirements.txt && python -u game.py
+          image: python:3.12.9
+          name: game-service
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/requirements.txt
+              name: frontend-cm0
+              subPath: requirements.txt
+            - mountPath: /app/game.py
+              name: frontend-cm1
+              subPath: game.py
+            - mountPath: /app/account_pb2_grpc.py
+              name: frontend-cm2
+              subPath: account_pb2_grpc.py
+            - mountPath: /app/account_pb2.py
+              name: frontend-cm3
+              subPath: account_pb2.py
+            - mountPath: /app/movie_pb2_grpc.py
+              name: frontend-cm4
+              subPath: movie_pb2_grpc.py
+            - mountPath: /app/movie_pb2.py
+              name: frontend-cm5
+              subPath: movie_pb2.py
+            - mountPath: /app/tournament_pb2_grpc.py
+              name: frontend-cm6
+              subPath: tournament_pb2_grpc.py
+            - mountPath: /app/tournament_pb2.py
+              name: frontend-cm7
+              subPath: tournament_pb2.py
+            - mountPath: /app/templates/account.html
+              name: frontend-cm8
+              subPath: account.html
+            - mountPath: /app/templates/tournament.html
+              name: frontend-cm9
+              subPath: tournament.html
+            - mountPath: /app/templates/firstScreen.html
+              name: frontend-cm10
+              subPath: firstScreen.html
+            - mountPath: /app/templates/game1Screen.html
+              name: frontend-cm11
+              subPath: game1Screen.html
+            - mountPath: /app/templates/gameScreen.html
+              name: frontend-cm12
+              subPath: gameScreen.html
+          workingDir: /app
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: requirements.txt
+                path: requirements.txt
+            name: frontend-cm0
+          name: frontend-cm0
+        - configMap:
+            items:
+              - key: game.py
+                path: game.py
+            name: frontend-cm1
+          name: frontend-cm1
+        - configMap:
+            items:
+              - key: account_pb2_grpc.py
+                path: account_pb2_grpc.py
+            name: frontend-cm2
+          name: frontend-cm2
+        - configMap:
+            items:
+              - key: account_pb2.py
+                path: account_pb2.py
+            name: frontend-cm3
+          name: frontend-cm3
+        - configMap:
+            items:
+              - key: movie_pb2_grpc.py
+                path: movie_pb2_grpc.py
+            name: frontend-cm4
+          name: frontend-cm4
+        - configMap:
+            items:
+              - key: movie_pb2.py
+                path: movie_pb2.py
+            name: frontend-cm5
+          name: frontend-cm5
+        - configMap:
+            items:
+              - key: tournament_pb2_grpc.py
+                path: tournament_pb2_grpc.py
+            name: frontend-cm6
+          name: frontend-cm6
+        - configMap:
+            items:
+              - key: tournament_pb2.py
+                path: tournament_pb2.py
+            name: frontend-cm7
+          name: frontend-cm7
+        - configMap:
+            items:
+              - key: account.html
+                path: account.html
+            name: frontend-cm8
+          name: frontend-cm8
+        - configMap:
+            items:
+              - key: tournament.html
+                path: tournament.html
+            name: frontend-cm9
+          name: frontend-cm9
+        - configMap:
+            items:
+              - key: firstScreen.html
+                path: firstScreen.html
+            name: frontend-cm10
+          name: frontend-cm10
+        - configMap:
+            items:
+              - key: game1Screen.html
+                path: game1Screen.html
+            name: frontend-cm11
+          name: frontend-cm11
+        - configMap:
+            items:
+              - key: gameScreen.html
+                path: gameScreen.html
+            name: frontend-cm12
+          name: frontend-cm12
