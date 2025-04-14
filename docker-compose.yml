@@ -8,8 +8,6 @@ services:
             - ./src/account_service/account_pb2_grpc.py:/app/account_pb2_grpc.py
             - ./src/account_service/account_pb2.py:/app/account_pb2.py
         working_dir: /app
-        expose:
-            - "50051"
         ports:
             - "50051:50051"
         command: bash -c "pip install -r requirements.txt && python -u script.py && python -u account_server.py"
@@ -30,8 +28,6 @@ services:
             - ./src/account_service/account_pb2.py:/app/account_pb2.py
         working_dir: /app
         command: bash -c "pip install -r requirements.txt && python -u tournament_server.py"
-        expose:
-            - "50053"
         ports:
             - "50053:50053"
         depends_on:
@@ -49,8 +45,6 @@ services:
             - ./src/movie_service/movie_pb2.py:/app/movie_pb2.py
             - ./src/script.py:/app/script.py
         working_dir: /app
-        expose:
-            - "50052"
         ports:
             - "50052:50052"
         command: bash -c "pip install -r requirements.txt && python -u movie_server.py"
@@ -76,8 +70,6 @@ services:
             - ./src/game_service/templates/game1Screen.html:/app/templates/game1Screen.html
             - ./src/game_service/templates/gameScreen.html:/app/templates/gameScreen.html
         working_dir: /app
-        expose:
-            - "5000"
         ports:
             - "5000:5000"
         command: bash -c "pip install -r requirements.txt && python -u game.py"
@@ -94,8 +86,6 @@ services:
         container_name: mongodb
         ports:
             - "27017:27017"
-        expose:
-            - "27017"
         # Uncomment the line below to persist MongoDB data across container restarts
         #   - ./mongo-data:/data/db
         # Uncomment the lines below to enable authentication in MongoDB
