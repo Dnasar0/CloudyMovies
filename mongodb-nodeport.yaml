@@ -1,14 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-    name: mongodb-external
+    name: mongodb-lb
 spec:
-    type: NodePort
+    type: LoadBalancer
     selector:
         io.kompose.service: mongodb
     ports:
         - name: mongodb
           protocol: TCP
-          port: 27017 # The port that the service exposes internally.
-          targetPort: 27017 # The port on which MongoDB is listening in the container.
-          nodePort: 30017 # You can choose a specific port or leave it undefined (Kubernetes will assign one in the 30000-32767 range).
+          port: 27017 # Exposed port for external access.
+          targetPort: 27017 # The port your MongoDB container listens on.
