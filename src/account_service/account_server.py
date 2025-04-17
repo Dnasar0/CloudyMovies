@@ -29,12 +29,12 @@ class AccountServiceServicer(account_pb2_grpc.AccountServiceServicer):
             return account_pb2.Empty()            
 
     def GetAccount(self, request, context):
+        print(f"Retrieving account for username: {request.username}")
         try:
             account_name = request.username
             account = accounts_collection.find_one({"username": account_name})
             if account:
                 return account_pb2.Account(
-                    id=int(1),
                     username=str(account["username"]),
                     password=str(account["password"]),
                     highScore=int(account["highScore"]),

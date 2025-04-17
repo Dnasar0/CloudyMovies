@@ -73,7 +73,6 @@ INSTRUÇÕES CORRER FICHEIRO
 Para correr o projeto, no diretório com o ficheiro docker, escreve-se "docker compose up". Depois correr o script (script.py) para popular DB. E abrir link que aparece quando docker compose up acabar de correr.
 
 
-Para o Henras Tenras:
 
 Nós para correr isto no wsl tivemos que instalar o kompose, para gerar os ficheiros yaml kubernets a partir do ficheiro docker, fizemos: 
 
@@ -104,7 +103,7 @@ Para verificar o estado de cada serviço:
 
 - watch -n 2 kubectl get pods
 
-Para dar expose do mongodb para depois editar o ficheiro script, e alterar o porto para popular db fazer:
+Para dar expose do mongodb para depois editar o ficheiro script.py, e alterar o porto para popular db fazer:
 
 - minikube service mongodb
 

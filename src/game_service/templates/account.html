@@ -56,16 +56,20 @@
         <h2>Account Details</h2>
         <form id="accountForm">
             <div class="input-group">
-                <label for="username">Username:{{account.username}}</label>
+                <label for="username">Username:</label>
+                <input id="username" value="{{ account.username }}" readonly>
             </div>
             <div class="input-group">
-                <label for="password">Password:{{account.password}}</label>
+                <label for="password">Password:</label>
+                <input id="password" value="{{ account.password }}" readonly>
             </div>
             <div class="input-group">
-                <label for="accountType">Account Type:{{account.account_type}}</label>
+                <label for="accountType">Account Type:</label>
+                <input id="accountType" value="{{ account.account_type }}" readonly>
             </div>
             <div class="input-group">
-                <label for="highscore">Highscore:{{account.highScore}}</label>
+                <label for="highscore">Highscore:</label>
+                <input id="highscore" value="{{ account.highScore }}" readonly>
             </div>
         </form>
         <div id="output" class="output" style="display: none;"></div>
