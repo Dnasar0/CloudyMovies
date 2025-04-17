@@ -8,7 +8,15 @@ metadata:
     io.kompose.service: movie-service
   name: movie-service
 spec:
-  replicas: 1
+  minReplicas: 1
+  maxReplicas: 2
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
   selector:
     matchLabels:
       io.kompose.service: movie-service
@@ -22,6 +30,7 @@ spec:
       labels:
         io.kompose.service: movie-service
     spec:
+      automountServiceAccountToken: false
       containers:
         - args:
             - bash
@@ -29,6 +38,13 @@ spec:
             - pip install -r requirements.txt && python -u movie_server.py
           image: python:3.12.9
           name: movie-service
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
           ports:
             - containerPort: 50052
               protocol: TCP
