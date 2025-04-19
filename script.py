@@ -4,7 +4,7 @@ import pandas as pd
 if __name__ == '__main__':
 
     # Connect to MongoDB (make sure MongoDB is running)
-    client = MongoClient("mongodb://localhost:40291/")
+    client = MongoClient("mongodb://localhost:27017/")
 
     # Create a database and collections for each dataset
     db = client["cloudy_movies"]
