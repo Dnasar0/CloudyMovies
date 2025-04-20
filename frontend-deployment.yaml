@@ -8,15 +8,6 @@ metadata:
     io.kompose.service: frontend
   name: frontend
 spec:
-  minReplicas: 1
-  maxReplicas: 2
-  metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 70
   selector:
     matchLabels:
       io.kompose.service: frontend
