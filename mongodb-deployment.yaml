@@ -19,13 +19,6 @@ spec:
       labels:
         io.kompose.service: mongodb
     spec:
-      resources:
-        requests:
-          memory: "256Mi"
-          cpu: "200m"
-        limits:
-          memory: "512Mi"
-          cpu: "500m"
       containers:
         - image: mongo:latest
           name: mongodb
