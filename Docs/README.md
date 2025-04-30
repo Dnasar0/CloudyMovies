@@ -117,3 +117,19 @@ Caso se queira verificar algum log, por exemplo o do frontend, faz-se:
 
 - kubectl logs <nome do pod>
 
+
+
+SUGESTÕES DO STOR:
+
+Falta autenticação do lado do backend (dentro dos kubernetes -> usar keycloak) OU (serviço cloud -> google identity OU auth0)
+
+PRIORITÁRIO --> Stateful set deployment para a BD OU localizar mongodb operator para persistir dados
+
+                Estratégias update e rollback
+
+                Secrets para BD
+
+
+
+
+
