@@ -6,7 +6,7 @@ info:
 
 servers:
   - url: "/CloudyMovies"
-
+  
 components:
   schemas:
     GameMovieDetails:
@@ -145,119 +145,25 @@ components:
       in: path
       required: true
       schema:
-        type: "integer"
+        type: "integer"  
 
 paths:
-  /GameMovie:
+  /:
     get:
-      operationId: "gameMovie.read_all"
+      operationId: "frontend.home"
       tags:
-        - "GameMovie"
-      summary: "Read the list of all GameMovies"
+        - "Frontend"
+      summary: "Returns initial login page"
       responses:
         "200":
-          description: "Successfully read GameMovie list"
-          content:
-            application/json:
-              schema:
-                type: "array"
-                items:
-                  $ref: "#/components/schemas/GameMovieDetails"
+          description: "Successfully loaded first page"
 
-  /GameMovie/random:
-    get:
-      tags:
-        - "GameMovie"
-      operationId: "gameMovie.getRandomId"
-      summary: "Get a random GameMovie"
-      responses:
-        "200":
-          description: "Successfully got random GameMovie"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GameMovieDetails"
 
-  /GameMovie/{id}:
-    put:
-      tags:
-        - "GameMovie"
-      operationId: "gameMovie.update"
-      summary: "Update a GameMovie"
-      parameters:
-        - $ref: "#/components/parameters/id"
-      responses:
-        "200":
-          description: "Successfully updated GameMovie"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/GameMovieDetails"
-
-  /Movie:
+  /submit:
     post:
-      operationId: "movie.create"
+      operationId: "frontend.createAccount"
       tags:
-        - "Movie"
-      summary: "Create a Movie"
-      requestBody:
-        description: "Movie to create"
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Movie"
-      responses:
-        "201":
-          description: "Successfully created a movie"
-
-  /Movie/{id}:
-    get:
-      tags:
-        - "Movie"
-      operationId: "movie.getOne"
-      summary: "Get a Movie"
-      parameters:
-        - $ref: "#/components/parameters/id"
-      responses:
-        "200":
-          description: "Successfully got Movie"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Movie"
-    put:
-      tags:
-        - "Movie"
-      operationId: "movie.update"
-      summary: "Update a Movie"
-      parameters:
-        - $ref: "#/components/parameters/id"
-      responses:
-        "200":
-          description: "Successfully updated Movie"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Movie"
-    delete:
-      tags:
-        - "Movie"
-      operationId: "movie.delete"
-      summary: "Delete a Movie"
-      parameters:
-        - $ref: "#/components/parameters/id"
-      responses:
-        "204":
-          description: "Successfully deleted movie"
-
-  /Account:
-    post:
-      operationId: "account.create"
-      tags:
-        - "Account"
+        - "Frontend"
       summary: "Create an Account"
       responses:
         "201":
@@ -268,103 +174,159 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Account"
+              type: "object"
+              properties:
+                username:
+                  type: "string"
+                password:
+                  type: "string"
+                account_type:
+                  type: "string"
 
-  /Account/{id}:
-    get:
+  /updateHighScore:
+    post:
+      operationId: "frontend.updateHighScore"
       tags:
-        - "Account"
-      operationId: "account.getOne"
-      summary: "Get an Account"
-      parameters:
-        - $ref: "#/components/parameters/id_account"
+        - "Frontend"
+      summary: "Update Account's highscore"
       responses:
-        "200":
-          description: "Successfully got Account"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Account"
-    put:
-      tags:
-        - "Account"
-      operationId: "account.update"
-      summary: "Update an Account"
-      parameters:
-        - $ref: "#/components/parameters/id_account"
-      responses:
-        "200":
-          description: "Successfully updated Account"
+        "201":
+          description: "Successfully updated account's high score"
       requestBody:
+        description: "Account to update"
+        required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Account"
-    delete:
+              type: "object"
+              properties:
+                username:
+                  type: "string"
+                highscore:
+                  type: "integer"
+
+  /get/{id}:
+    get:
       tags:
-        - "Account"
-      operationId: "account.delete"
-      summary: "Delete an Account"
+        - "Frontend"
+      operationId: "frontend.getMovieById"
+      summary: "Load page of movie"
       parameters:
-        - $ref: "#/components/parameters/id_account"
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
-        "204":
-          description: "Successfully deleted account"
-          
-  /Tournament:
-    post:
-      operationId: "tournament.create"
+        "200":
+          description: "Successfully got Movie page"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Movie"
+
+  /getRandom:
+    get:
       tags:
-        - "Tournament"
+        - "Frontend"
+      operationId: "frontend.getRandomMovie"
+      summary: "Get a Movie"
+      responses:
+        "200":
+          description: "Successfully got Movie"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:              
+                  movieId:
+                    type: "integer"
+                  title:
+                    type: "string"
+                  poster:
+                    type: "string"
+                  rating:
+                    type: "number"               
+                  year:
+                    type: "integer"
+
+  /getTwoRandom:
+    get:
+      tags:
+        - "Frontend"
+      operationId: "frontend.getTwoRandomMovies"
+      summary: "Load page with two random movies"
+      responses:
+        "200":
+          description: "Successfully loaded page"
+
+  /getTournaments:
+    get:
+      tags:
+        - "Frontend"
+      operationId: "frontend.getTournaments"
+      summary: "Read the list of all Tournaments"
+      responses:
+        "200":
+          description: "Successfully read Tournaments list"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Tournament"
+
+  /createTournament:
+    post:
+      operationId: "frontend.createTournament"
+      tags:
+        - "Frontend"
       summary: "Create a Tournament"
       responses:
         "201":
-          description: "Successfully created tournament"
+          description: "Tournament Created"
       requestBody:
         description: "Tournament to create"
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Tournament"
+              $ref: "#/components/schemas/Tournament"  
 
-  /Tournament/{id}:
-    get:
+  /joinTournament:              
+    post:
+      operationId: "frontend.joinTournament"
       tags:
-        - "Tournament"
-      operationId: "tournament.getOne"
-      summary: "Get a Tournament"
-      parameters:
-        - $ref: "#/components/parameters/id_tournament"
-      responses:
-        "200":
-          description: "Successfully got Tournament"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Tournament"
-    put:
-      tags:
-        - "Tournament"
-      operationId: "tournament.update"
-      summary: "Update a Tournament"
-      parameters:
-        - $ref: "#/components/parameters/id_tournament"
-      responses:
-        "200":
-          description: "Successfully updated Tournament"
+        - "Frontend"      
+      summary: "Join a Tournament"
       requestBody:
+        description: "Tournament to join"
+        required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Tournament"
-    delete:
-      tags:
-        - "Tournament"
-      operationId: "tournament.delete"
-      summary: "Delete a Tournament"
-      parameters:
-        - $ref: "#/components/parameters/id_tournament"
+              type: "object"
+              properties:
+                tournamentId:
+                  type: "integer"
+                username:
+                  type: "string"
       responses:
-        "204":
-          description: "Successfully deleted tournament"
+        "201":
+          description: "Joined Tournament"
+
+  /account/{username}:
+    get:
+      operationId: "frontend.getAccountByUsername"
+      tags:
+        - "Frontend"
+      summary: "Get an Account info page"
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "Successfully got Account"
