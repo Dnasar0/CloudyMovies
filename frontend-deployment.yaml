@@ -28,13 +28,20 @@ spec:
             - pip install -r requirements.txt && python -u game.py
           image: python:3.12.9
           name: game-service
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 5000
+            initialDelaySeconds: 200
+            periodSeconds: 10
+            failureThreshold: 3
           resources:
             requests:
-              memory: "64Mi"
               cpu: "100m"
-            limits:
               memory: "128Mi"
+            limits:
               cpu: "250m"
+              memory: "256Mi"
           ports:
             - containerPort: 5000
               protocol: TCP

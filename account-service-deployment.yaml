@@ -28,13 +28,31 @@ spec:
             - pip install -r requirements.txt && python -u account_server.py
           image: python:3.12.9
           name: account-service
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 200
+            periodSeconds: 10
+            failureThreshold: 3
           resources:
             requests:
+              cpu: "100m"
               memory: "128Mi"
-              cpu: "300m"
             limits:
+              cpu: "250m"
               memory: "256Mi"
-              cpu: "600m"
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: account-mongo-secret
+                  key: DB_USER
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: account-mongo-secret
+                  key: DB_PASS
           ports:
             - containerPort: 50051
               protocol: TCP

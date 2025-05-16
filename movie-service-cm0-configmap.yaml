@@ -4,6 +4,8 @@ data:
     grpcio
     grpcio-tools
     pymongo
+    flask
+    thread6
 kind: ConfigMap
 metadata:
   annotations:

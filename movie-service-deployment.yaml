@@ -21,7 +21,6 @@ spec:
       labels:
         io.kompose.service: movie-service
     spec:
-      automountServiceAccountToken: false
       containers:
         - args:
             - bash
@@ -29,13 +28,31 @@ spec:
             - pip install -r requirements.txt && python -u movie_server.py
           image: python:3.12.9
           name: movie-service
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 200
+            periodSeconds: 10
+            failureThreshold: 3
           resources:
             requests:
-              memory: "64Mi"
-              cpu: "250m"
-            limits:
+              cpu: "100m"
               memory: "128Mi"
-              cpu: "500m"
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: movie-mongo-secret
+                  key: DB_USER
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: movie-mongo-secret
+                  key: DB_PASS
           ports:
             - containerPort: 50052
               protocol: TCP

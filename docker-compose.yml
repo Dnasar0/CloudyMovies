@@ -79,21 +79,7 @@ services:
             - mongodb
         networks:
             - network
-
-    mongodb:
-        image: mongo:latest
-        container_name: mongodb
-        ports:
-            - "27017:27017"
-        # Uncomment the line below to persist MongoDB data across container restarts
-        #   - ./mongo-data:/data/db
-        # Uncomment the lines below to enable authentication in MongoDB
-        # environment:
-        #   MONGO_INITDB_ROOT_USERNAME: root
-        #   MONGO_INITDB_ROOT_PASSWORD: example
-        networks:
-            - network
-
+            
 networks:
     network:
         driver: bridge

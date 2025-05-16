@@ -1,3 +1,6 @@
+import os
+import threading
+from flask import Flask
 import grpc
 from concurrent import futures
 import tournament_pb2
@@ -5,7 +8,22 @@ import tournament_pb2_grpc
 from pymongo import MongoClient
 from bson import ObjectId
 
-client = MongoClient("mongodb://mongodb:27017/")
+app = Flask(__name__)
+
+@app.route('/healthz')
+def healthz():
+    return "OK", 200
+
+def run_health_server():
+    app.run(host='0.0.0.0', port=8080)
+
+username = os.environ["DB_USER"]
+password = os.environ["DB_PASS"]
+
+client = MongoClient(
+    f"mongodb+srv://{username}:{password}@cluster0.o6uzq0y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+)
+
 db = client["cloudy_movies"]
 tournaments_collection = db["tournaments"]
 
@@ -168,4 +186,5 @@ def serve():
     server.wait_for_termination()
 
 if __name__ == '__main__':
+    threading.Thread(target=run_health_server, daemon=True).start()
     serve()
