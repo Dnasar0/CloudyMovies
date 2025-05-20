@@ -8,6 +8,7 @@ metadata:
     io.kompose.service: frontend
   name: frontend
 spec:
+  type: LoadBalancer   # ← Add this line
   ports:
     - name: "5000"
       port: 5000
