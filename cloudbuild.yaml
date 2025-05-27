@@ -1,0 +1,19 @@
+steps:
+  - name: 'gcr.io/cloud-builders/git'
+    args: ['clone', 'https://github.com/Dnasar0/CloudyMovies', '.']
+    # If your repo is private, you'll need to set up SSH keys or use Cloud Source Repositories
+    # For GitHub triggers, Cloud Build automatically handles cloning public/private repos
+    # if you've connected your GitHub account.
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args: ['./cloudbuild.sh']
+
+# Optional: Configure substitutions if you want to reuse this for different clusters/regions
+# substitutions:
+#   _CLUSTER_NAME: 'hello-cluster'
+#   _LOCATION: 'europe-west4'
+
+# You can also add build artifacts, for example, if you were building Docker images.
+# images:
+#   - 'gcr.io/$PROJECT_ID/your-app-image:latest' # Example if you were building images
