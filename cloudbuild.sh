@@ -4,7 +4,7 @@
 set -e
 
 PROJECT_ID=$(gcloud config get-value project)
-CLUSTER_NAME="hello-cluster"
+CLUSTER_NAME="cloudymovie"
 LOCATION="europe-west4" # Or your desired region
 
 echo "--- Starting Cloud Build Deployment ---"
@@ -42,6 +42,9 @@ kubectl create secret generic tournament-mongo-secret \
 
 # 4. Apply Kubernetes YAML files
 echo "Applying Kubernetes deployments..."
-kubectl apply -f .
+
+# Use a find command to select only the Kubernetes YAML files and exclude cloudbuild.yaml
+# Assuming your Kubernetes manifests are files ending with .yaml and are not cloudbuild.yaml
+find . -maxdepth 1 -name "*.yaml" -not -name "cloudbuild.yaml" -print0 | xargs -0 kubectl apply -f -
 
 echo "--- Cloud Build Deployment Finished ---"
