@@ -1,19 +1,41 @@
 steps:
-  - name: 'gcr.io/cloud-builders/git'
-    args: ['clone', 'https://github.com/Dnasar0/CloudyMovies', '.']
-    # If your repo is private, you'll need to set up SSH keys or use Cloud Source Repositories
-    # For GitHub triggers, Cloud Build automatically handles cloning public/private repos
-    # if you've connected your GitHub account.
 
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
-    args: ['./cloudbuild.sh']
+    args:
+      - '-c' # Execute a string as a command
+      - |
+        # Fetch secrets from Secret Manager
+        export DB_USER_ACCOUNT=$(gcloud secrets access account-mongo-user --version=latest)
+        export DB_PASS_ACCOUNT=$(gcloud secrets access account-mongo-pass --version=latest)
+        export DB_USER_MOVIE=$(gcloud secrets access movie-mongo-user --version=latest)
+        export DB_PASS_MOVIE=$(gcloud secrets access movie-mongo-pass --version=latest)
+        export DB_USER_TOURNAMENT=$(gcloud secrets access tournament-mongo-user --version=latest)
+        export DB_PASS_TOURNAMENT=$(gcloud secrets access tournament-mongo-pass --version=latest)
 
-# Optional: Configure substitutions if you want to reuse this for different clusters/regions
-# substitutions:
-#   _CLUSTER_NAME: 'hello-cluster'
-#   _LOCATION: 'europe-west4'
+        # Execute your deployment script, passing the secrets as environment variables
+        ./cloudbuild.sh
+    # Define sensitive variables that should not be logged
+    secretEnv:
+      - 'DB_USER_ACCOUNT'
+      - 'DB_PASS_ACCOUNT'
+      - 'DB_USER_MOVIE'
+      - 'DB_PASS_MOVIE'
+      - 'DB_USER_TOURNAMENT'
+      - 'DB_PASS_TOURNAMENT'
 
-# You can also add build artifacts, for example, if you were building Docker images.
-# images:
-#   - 'gcr.io/$PROJECT_ID/your-app-image:latest' # Example if you were building images
+# Cloud Build's secrets section to specify which secrets to make available
+# Make sure the secret names here match the actual secret names in Secret Manager
+secrets:
+  - id: account-mongo-user
+    uri: projects/255467220069/secrets/account-mongo-user
+  - id: account-mongo-pass
+    uri: projects/255467220069/secrets/account-mongo-pass
+  - id: movie-mongo-user
+    uri: projects/255467220069/secrets/movie-mongo-user
+  - id: movie-mongo-pass
+    uri: projects/255467220069/secrets/movie-mongo-pass
+  - id: tournament-mongo-user
+    uri: projects/255467220069/secrets/tournament-mongo-user
+  - id: tournament-mongo-pass
+    uri: projects/255467220069/secrets/tournament-mongo-pass
