@@ -1,21 +1,21 @@
 steps:
+  # REMOVED: The `git clone` step is generally not needed if using a GitHub trigger.
+  # Cloud Build automatically clones your repository when the trigger fires.
 
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
     args:
       - '-c' # Execute a string as a command
       - |
-        # Fetch secrets from Secret Manager
-        export DB_USER_ACCOUNT=$(gcloud secrets access account-mongo-user --version=latest)
-        export DB_PASS_ACCOUNT=$(gcloud secrets access account-mongo-pass --version=latest)
-        export DB_USER_MOVIE=$(gcloud secrets access movie-mongo-user --version=latest)
-        export DB_PASS_MOVIE=$(gcloud secrets access movie-mongo-pass --version=latest)
-        export DB_USER_TOURNAMENT=$(gcloud secrets access tournament-mongo-user --version=latest)
-        export DB_PASS_TOURNAMENT=$(gcloud secrets access tournament-mongo-pass --version=latest)
+        # Cloud Build will automatically inject the secrets defined in 'availableSecrets'
+        # into this step's environment because they are listed in 'secretEnv'.
+        # Therefore, you do NOT need to run `gcloud secrets access` here.
 
-        # Execute your deployment script, passing the secrets as environment variables
+        # Execute your deployment script. The secrets (DB_USER_ACCOUNT, etc.)
+        # will already be available as environment variables to cloudbuild.sh.
         ./cloudbuild.sh
-    # Define sensitive variables that should not be logged
+    # Define sensitive variables that should not be logged.
+    # These names MUST match the 'env' names in the 'availableSecrets' section below.
     secretEnv:
       - 'DB_USER_ACCOUNT'
       - 'DB_PASS_ACCOUNT'
@@ -24,18 +24,21 @@ steps:
       - 'DB_USER_TOURNAMENT'
       - 'DB_PASS_TOURNAMENT'
 
-# Cloud Build's secrets section to specify which secrets to make available
-# Make sure the secret names here match the actual secret names in Secret Manager
-secrets:
-  - id: account-mongo-user
-    uri: projects/255467220069/secrets/account-mongo-user
-  - id: account-mongo-pass
-    uri: projects/255467220069/secrets/account-mongo-pass
-  - id: movie-mongo-user
-    uri: projects/255467220069/secrets/movie-mongo-user
-  - id: movie-mongo-pass
-    uri: projects/255467220069/secrets/movie-mongo-pass
-  - id: tournament-mongo-user
-    uri: projects/255467220069/secrets/tournament-mongo-user
-  - id: tournament-mongo-pass
-    uri: projects/255467220069/secrets/tournament-mongo-pass
+# CORRECT WAY to make secrets available to steps via 'availableSecrets'
+availableSecrets:
+  secretManager:
+  # For each secret, specify the full version name (or 'latest') and the
+  # environment variable name it should be available as in your build step.
+  - versionName: projects/255467220069/secrets/account-mongo-user/versions/latest
+    env: DB_USER_ACCOUNT # This will be the environment variable name in your step
+  - versionName: projects/255467220069/secrets/account-mongo-pass/versions/latest
+    env: DB_PASS_ACCOUNT
+  - versionName: projects/255467220069/secrets/movie-mongo-user/versions/latest
+    env: DB_USER_MOVIE
+  - versionName: projects/255467220069/secrets/movie-mongo-pass/versions/latest
+    env: DB_PASS_MOVIE
+  - versionName: projects/255467220069/secrets/tournament-mongo-user/versions/latest
+    env: DB_USER_TOURNAMENT
+  - versionName: projects/255467220069/secrets/tournament-mongo-pass/versions/latest
+    env: DB_PASS_TOURNAMENT
+
