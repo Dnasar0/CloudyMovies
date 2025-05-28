@@ -12,6 +12,8 @@ steps:
         # Cloud Build will automatically inject the secrets defined in 'availableSecrets'
         # into this step's environment because they are listed in 'secretEnv'.
         # Therefore, you do NOT need to run `gcloud secrets access` here.
+        # Make the script executable
+        chmod +x ./cloudbuild.sh
 
         # Execute your deployment script. The secrets (DB_USER_ACCOUNT, etc.)
         # will already be available as environment variables to cloudbuild.sh.
