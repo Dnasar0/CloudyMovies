@@ -1,3 +1,10 @@
+options:
+  # Specify the GCS bucket for logs.
+  # Replace 'gs://your-project-id-cloudbuild-logs' with the actual path to your logs bucket.
+  # Make sure the Cloud Build service account has 'Storage Object Creator' and 'Storage Object Viewer'
+  # permissions on this bucket.
+  logsBucket: 'gs://cloudymovies' # <-- IMPORTANT: Update this with your bucket name!
+
 steps:
   # REMOVED: The `git clone` step is generally not needed if using a GitHub trigger.
   # Cloud Build automatically clones your repository when the trigger fires.
