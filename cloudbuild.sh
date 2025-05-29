@@ -43,8 +43,10 @@ kubectl create secret generic tournament-mongo-secret \
 # 4. Apply Kubernetes YAML files
 echo "Applying Kubernetes deployments..."
 
-# Use a find command to select only the Kubernetes YAML files and exclude cloudbuild.yaml
-# Assuming your Kubernetes manifests are files ending with .yaml and are not cloudbuild.yaml
-find . -maxdepth 1 -name "*.yaml" -not -name "cloudbuild.yaml" -print0 | xargs -0 kubectl apply -f -
+# Iterate over each YAML file that is NOT cloudbuild.yaml and apply it
+for file in $(find . -maxdepth 1 -name "*.yaml" -not -name "cloudbuild.yaml"); do
+  echo "Applying: $file" # Optional: to see which file is being applied
+  kubectl apply -f "$file"
+done
 
 echo "--- Cloud Build Deployment Finished ---"
