@@ -3,3 +3,5 @@ grpcio-tools
 pymongo
 flask
 thread6
+pytest         # NEW
+pytest-mock    # NEW

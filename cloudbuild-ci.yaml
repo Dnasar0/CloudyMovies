@@ -1,0 +1,11 @@
+# cloudbuild-ci.yaml (snippet for account service)
+steps:
+  - id: 'Run Tests for Account Service'
+    name: 'python:3.9' # Or the Python version you're using
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        cd src/account_service/
+        pip install -r requirements.txt
+        pytest
