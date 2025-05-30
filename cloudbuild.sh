@@ -4,7 +4,7 @@
 set -e
 
 PROJECT_ID=$(gcloud config get-value project)
-CLUSTER_NAME="cloudymovie"
+CLUSTER_NAME="cloudymovie1"
 LOCATION="europe-west4" # Or your desired region
 
 echo "--- Starting Cloud Build Deployment ---"
