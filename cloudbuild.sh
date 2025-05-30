@@ -44,7 +44,7 @@ kubectl create secret generic tournament-mongo-secret \
 echo "Applying Kubernetes deployments..."
 
 # Iterate over each YAML file that is NOT cloudbuild.yaml and apply it
-for file in $(find . -maxdepth 1 -name "*.yaml" -not -name "cloudbuild.yaml"); do
+for file in $(find . -maxdepth 1 -name "*.yaml" -not -name "cloudbuild.yaml" -not -name "cloudbuild-ci.yaml"); do
   echo "Applying: $file" # Optional: to see which file is being applied
   kubectl apply -f "$file"
 done
