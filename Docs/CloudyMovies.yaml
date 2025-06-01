@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
-  title: "Cloudy Movies"
-  description: "An API about an app where you will be able to play a higher/lower game about IMDb ratings of movies"
+  title: "Cloudy Movie | A Browser Game"
+  description: "An API about an app where you will be able to play a higher/lower game about letterboxd ratings of movies. The best way to test this game is via the browser, since we utilize a frontend to call the methods."
   version: "1.0.0"
 
 servers:
@@ -219,11 +219,7 @@ paths:
             type: integer
       responses:
         "200":
-          description: "Successfully got Movie page"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Movie"
+          description: "Successfully got html Movie page"
 
   /getRandom:
     get:
@@ -258,17 +254,17 @@ paths:
       summary: "Load page with two random movies"
       responses:
         "200":
-          description: "Successfully loaded page"
+          description: "Successfully html loaded page displaying 2 random movies"
 
   /getTournaments:
     get:
       tags:
         - "Frontend"
       operationId: "frontend.getTournaments"
-      summary: "Read the list of all Tournaments"
+      summary: "Get the list of all Tournaments"
       responses:
         "200":
-          description: "Successfully read Tournaments list"
+          description: "Successfully retrieved Tournaments list"
           content:
             application/json:
               schema:
@@ -320,7 +316,7 @@ paths:
       operationId: "frontend.getAccountByUsername"
       tags:
         - "Frontend"
-      summary: "Get an Account info page"
+      summary: "Get an html page with Account info"
       parameters:
         - name: username
           in: path
